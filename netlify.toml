@@ -1,10 +1,10 @@
 [build]
-  command = "pnpm build"
+  command = "corepack enable && pnpm install --frozen-lockfile && pnpm build"
   publish = "dist/client"
 
 [build.environment]
   NODE_VERSION = "22"
-  PNPM_VERSION = "9.15.0"
+  COREPACK_ENABLE_STRICT = "0"
 
 [dev]
   command = "pnpm dev"

@@ -1,5 +1,5 @@
 [build]
-  command = "corepack enable && pnpm install --frozen-lockfile && pnpm build"
+  command = "corepack enable && NODE_ENV=development pnpm install --frozen-lockfile && pnpm build"
   publish = "dist/client"
 
 [build.environment]

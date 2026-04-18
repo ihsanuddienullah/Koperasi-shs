@@ -12,11 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TentangRouteImport } from './routes/tentang'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProdukIndexRouteImport } from './routes/produk/index'
-import { Route as TokoSellerIdRouteImport } from './routes/toko/$sellerId'
+import { Route as TokoSlugTokoRouteImport } from './routes/toko/$slugToko'
 import { Route as SellerProfilRouteImport } from './routes/seller/profil'
 import { Route as SellerLoginRouteImport } from './routes/seller/login'
 import { Route as SellerDashboardRouteImport } from './routes/seller/dashboard'
-import { Route as ProdukProdukIdRouteImport } from './routes/produk/$produkId'
+import { Route as ProdukSlugRouteImport } from './routes/produk/$slug'
 import { Route as SellerProdukIndexRouteImport } from './routes/seller/produk/index'
 import { Route as SellerProdukTambahRouteImport } from './routes/seller/produk/tambah'
 import { Route as SellerProdukProdukIdEditRouteImport } from './routes/seller/produk/$produkId/edit'
@@ -36,9 +36,9 @@ const ProdukIndexRoute = ProdukIndexRouteImport.update({
   path: '/produk/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TokoSellerIdRoute = TokoSellerIdRouteImport.update({
-  id: '/toko/$sellerId',
-  path: '/toko/$sellerId',
+const TokoSlugTokoRoute = TokoSlugTokoRouteImport.update({
+  id: '/toko/$slugToko',
+  path: '/toko/$slugToko',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SellerProfilRoute = SellerProfilRouteImport.update({
@@ -56,9 +56,9 @@ const SellerDashboardRoute = SellerDashboardRouteImport.update({
   path: '/seller/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProdukProdukIdRoute = ProdukProdukIdRouteImport.update({
-  id: '/produk/$produkId',
-  path: '/produk/$produkId',
+const ProdukSlugRoute = ProdukSlugRouteImport.update({
+  id: '/produk/$slug',
+  path: '/produk/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SellerProdukIndexRoute = SellerProdukIndexRouteImport.update({
@@ -81,11 +81,11 @@ const SellerProdukProdukIdEditRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/tentang': typeof TentangRoute
-  '/produk/$produkId': typeof ProdukProdukIdRoute
+  '/produk/$slug': typeof ProdukSlugRoute
   '/seller/dashboard': typeof SellerDashboardRoute
   '/seller/login': typeof SellerLoginRoute
   '/seller/profil': typeof SellerProfilRoute
-  '/toko/$sellerId': typeof TokoSellerIdRoute
+  '/toko/$slugToko': typeof TokoSlugTokoRoute
   '/produk/': typeof ProdukIndexRoute
   '/seller/produk/tambah': typeof SellerProdukTambahRoute
   '/seller/produk/': typeof SellerProdukIndexRoute
@@ -94,11 +94,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/tentang': typeof TentangRoute
-  '/produk/$produkId': typeof ProdukProdukIdRoute
+  '/produk/$slug': typeof ProdukSlugRoute
   '/seller/dashboard': typeof SellerDashboardRoute
   '/seller/login': typeof SellerLoginRoute
   '/seller/profil': typeof SellerProfilRoute
-  '/toko/$sellerId': typeof TokoSellerIdRoute
+  '/toko/$slugToko': typeof TokoSlugTokoRoute
   '/produk': typeof ProdukIndexRoute
   '/seller/produk/tambah': typeof SellerProdukTambahRoute
   '/seller/produk': typeof SellerProdukIndexRoute
@@ -108,11 +108,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/tentang': typeof TentangRoute
-  '/produk/$produkId': typeof ProdukProdukIdRoute
+  '/produk/$slug': typeof ProdukSlugRoute
   '/seller/dashboard': typeof SellerDashboardRoute
   '/seller/login': typeof SellerLoginRoute
   '/seller/profil': typeof SellerProfilRoute
-  '/toko/$sellerId': typeof TokoSellerIdRoute
+  '/toko/$slugToko': typeof TokoSlugTokoRoute
   '/produk/': typeof ProdukIndexRoute
   '/seller/produk/tambah': typeof SellerProdukTambahRoute
   '/seller/produk/': typeof SellerProdukIndexRoute
@@ -123,11 +123,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/tentang'
-    | '/produk/$produkId'
+    | '/produk/$slug'
     | '/seller/dashboard'
     | '/seller/login'
     | '/seller/profil'
-    | '/toko/$sellerId'
+    | '/toko/$slugToko'
     | '/produk/'
     | '/seller/produk/tambah'
     | '/seller/produk/'
@@ -136,11 +136,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/tentang'
-    | '/produk/$produkId'
+    | '/produk/$slug'
     | '/seller/dashboard'
     | '/seller/login'
     | '/seller/profil'
-    | '/toko/$sellerId'
+    | '/toko/$slugToko'
     | '/produk'
     | '/seller/produk/tambah'
     | '/seller/produk'
@@ -149,11 +149,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/tentang'
-    | '/produk/$produkId'
+    | '/produk/$slug'
     | '/seller/dashboard'
     | '/seller/login'
     | '/seller/profil'
-    | '/toko/$sellerId'
+    | '/toko/$slugToko'
     | '/produk/'
     | '/seller/produk/tambah'
     | '/seller/produk/'
@@ -163,11 +163,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   TentangRoute: typeof TentangRoute
-  ProdukProdukIdRoute: typeof ProdukProdukIdRoute
+  ProdukSlugRoute: typeof ProdukSlugRoute
   SellerDashboardRoute: typeof SellerDashboardRoute
   SellerLoginRoute: typeof SellerLoginRoute
   SellerProfilRoute: typeof SellerProfilRoute
-  TokoSellerIdRoute: typeof TokoSellerIdRoute
+  TokoSlugTokoRoute: typeof TokoSlugTokoRoute
   ProdukIndexRoute: typeof ProdukIndexRoute
   SellerProdukTambahRoute: typeof SellerProdukTambahRoute
   SellerProdukIndexRoute: typeof SellerProdukIndexRoute
@@ -197,11 +197,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProdukIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/toko/$sellerId': {
-      id: '/toko/$sellerId'
-      path: '/toko/$sellerId'
-      fullPath: '/toko/$sellerId'
-      preLoaderRoute: typeof TokoSellerIdRouteImport
+    '/toko/$slugToko': {
+      id: '/toko/$slugToko'
+      path: '/toko/$slugToko'
+      fullPath: '/toko/$slugToko'
+      preLoaderRoute: typeof TokoSlugTokoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/seller/profil': {
@@ -225,11 +225,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellerDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/produk/$produkId': {
-      id: '/produk/$produkId'
-      path: '/produk/$produkId'
-      fullPath: '/produk/$produkId'
-      preLoaderRoute: typeof ProdukProdukIdRouteImport
+    '/produk/$slug': {
+      id: '/produk/$slug'
+      path: '/produk/$slug'
+      fullPath: '/produk/$slug'
+      preLoaderRoute: typeof ProdukSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/seller/produk/': {
@@ -259,11 +259,11 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   TentangRoute: TentangRoute,
-  ProdukProdukIdRoute: ProdukProdukIdRoute,
+  ProdukSlugRoute: ProdukSlugRoute,
   SellerDashboardRoute: SellerDashboardRoute,
   SellerLoginRoute: SellerLoginRoute,
   SellerProfilRoute: SellerProfilRoute,
-  TokoSellerIdRoute: TokoSellerIdRoute,
+  TokoSlugTokoRoute: TokoSlugTokoRoute,
   ProdukIndexRoute: ProdukIndexRoute,
   SellerProdukTambahRoute: SellerProdukTambahRoute,
   SellerProdukIndexRoute: SellerProdukIndexRoute,

@@ -1,5 +1,5 @@
-export function buildWaLink(nomor: string, namaProduk: string, harga: number) {
-  const cleaned = nomor.replace(/\D/g, '')
+export function buildWhatsAppUrl(nomorWa: string, namaProduk: string, harga: number): string {
+  const cleaned = nomorWa.replace(/\D/g, '')
   const formatted = cleaned.startsWith('0') ? '62' + cleaned.slice(1) : cleaned
   const hargaFormatted = harga.toLocaleString('id-ID')
   const text = encodeURIComponent(

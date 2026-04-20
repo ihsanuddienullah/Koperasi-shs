@@ -58,7 +58,16 @@ export const registerSeller = createServerFn({ method: 'POST' })
       email: data.email,
       password: data.password,
     })
-    if (authError) throw new Error(authError.message)
+    if (authError) {
+      const msg = authError.message.toLowerCase()
+      if (msg.includes('rate limit') || msg.includes('email rate limit')) {
+        throw new Error('Terlalu banyak percobaan pendaftaran. Tunggu beberapa menit lalu coba lagi.')
+      }
+      if (msg.includes('already registered') || msg.includes('already exists') || msg.includes('user already')) {
+        throw new Error('Email ini sudah terdaftar. Silakan login atau gunakan email lain.')
+      }
+      throw new Error(authError.message)
+    }
     if (!authData.user) throw new Error('Registrasi gagal, coba lagi')
 
     const baseSlug = generateSlug(data.nama_toko)

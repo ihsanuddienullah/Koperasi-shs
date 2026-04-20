@@ -1,4 +1,3 @@
-import 'server-only'
 import { createServerClient } from '@supabase/ssr'
 import { getCookies, setCookie } from '@tanstack/react-start/server'
 import { createClient } from '@supabase/supabase-js'

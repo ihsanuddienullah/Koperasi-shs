@@ -1,4 +1,3 @@
-import 'server-only'
 import { createServerFn } from '@tanstack/react-start'
 import { getSupabaseServerClient, getSupabaseServiceClient } from './supabase'
 

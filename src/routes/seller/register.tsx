@@ -24,7 +24,8 @@ type FormState = {
 
 function RegisterPage() {
   const [loading, setLoading] = useState(false)
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState<Record<string, string | undefined>>({})
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [success, setSuccess] = useState(false)
   const [form, setForm] = useState<FormState>({
     email: '',
@@ -35,11 +36,18 @@ function RegisterPage() {
     deskripsi_toko: '',
   })
 
-  const set = (field: keyof FormState) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setForm({ ...form, [field]: e.target.value })
+  const validateField = (field: string, data: FormState) => {
+    const result = registerSchema.safeParse({
+      ...data,
+      deskripsi_toko: data.deskripsi_toko || undefined,
+    })
+    const issue = result.success ? undefined : result.error.issues.find(i => String(i.path[0]) === field)
+    setErrors(prev => ({ ...prev, [field]: issue?.message }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setTouched({ email: true, nama_toko: true, nomor_wa: true, deskripsi_toko: true, password: true, confirmPassword: true })
     const result = registerSchema.safeParse({
       ...form,
       deskripsi_toko: form.deskripsi_toko || undefined,
@@ -108,7 +116,22 @@ function RegisterPage() {
             ].map(({ id, label, type, placeholder, field }) => (
               <div key={id} className="space-y-1">
                 <Label htmlFor={id}>{label}</Label>
-                <Input id={id} type={type} placeholder={placeholder} value={form[field]} onChange={set(field)} disabled={loading} />
+                <Input
+                  id={id}
+                  type={type}
+                  placeholder={placeholder}
+                  value={form[field]}
+                  onChange={(e) => {
+                    const newForm = { ...form, [field]: e.target.value }
+                    setForm(newForm)
+                    if (touched[field]) validateField(field, newForm)
+                  }}
+                  onBlur={() => {
+                    setTouched(prev => ({ ...prev, [field]: true }))
+                    validateField(field, form)
+                  }}
+                  disabled={loading}
+                />
                 {errors[field] && <p className="text-xs text-red-500">{errors[field]}</p>}
               </div>
             ))}
@@ -118,19 +141,58 @@ function RegisterPage() {
                 id="deskripsi_toko"
                 placeholder="Ceritakan tentang toko Anda..."
                 value={form.deskripsi_toko}
-                onChange={set('deskripsi_toko')}
+                onChange={(e) => {
+                  const newForm = { ...form, deskripsi_toko: e.target.value }
+                  setForm(newForm)
+                  if (touched.deskripsi_toko) validateField('deskripsi_toko', newForm)
+                }}
+                onBlur={() => {
+                  setTouched(prev => ({ ...prev, deskripsi_toko: true }))
+                  validateField('deskripsi_toko', form)
+                }}
                 disabled={loading}
                 rows={3}
               />
             </div>
             <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" placeholder="Minimal 8 karakter" value={form.password} onChange={set('password')} disabled={loading} />
+              <Input
+                id="password"
+                type="password"
+                placeholder="Minimal 8 karakter"
+                value={form.password}
+                onChange={(e) => {
+                  const newForm = { ...form, password: e.target.value }
+                  setForm(newForm)
+                  if (touched.password) validateField('password', newForm)
+                  if (touched.confirmPassword) validateField('confirmPassword', newForm)
+                }}
+                onBlur={() => {
+                  setTouched(prev => ({ ...prev, password: true }))
+                  validateField('password', form)
+                }}
+                disabled={loading}
+              />
               {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}
             </div>
             <div className="space-y-1">
               <Label htmlFor="confirmPassword">Konfirmasi Password</Label>
-              <Input id="confirmPassword" type="password" placeholder="Ulangi password" value={form.confirmPassword} onChange={set('confirmPassword')} disabled={loading} />
+              <Input
+                id="confirmPassword"
+                type="password"
+                placeholder="Ulangi password"
+                value={form.confirmPassword}
+                onChange={(e) => {
+                  const newForm = { ...form, confirmPassword: e.target.value }
+                  setForm(newForm)
+                  if (touched.confirmPassword) validateField('confirmPassword', newForm)
+                }}
+                onBlur={() => {
+                  setTouched(prev => ({ ...prev, confirmPassword: true }))
+                  validateField('confirmPassword', form)
+                }}
+                disabled={loading}
+              />
               {errors.confirmPassword && <p className="text-xs text-red-500">{errors.confirmPassword}</p>}
             </div>
             <Button type="submit" className="w-full bg-[#1a6b3c] hover:bg-[#145730]" disabled={loading}>

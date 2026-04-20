@@ -18,7 +18,8 @@ function ProfilPage() {
   const { seller } = Route.useRouteContext() as { seller: Seller }
   const [loading, setLoading] = useState(false)
   const [uploadingFoto, setUploadingFoto] = useState(false)
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState<Record<string, string | undefined>>({})
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [form, setForm] = useState({
     nama_toko: seller.nama_toko,
     nomor_wa: seller.nomor_wa,
@@ -26,10 +27,14 @@ function ProfilPage() {
   })
   const [fotoToko, setFotoToko] = useState(seller.foto_toko_url ?? '')
 
-  const set =
-    (field: keyof typeof form) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-      setForm({ ...form, [field]: e.target.value })
+  const validateField = (field: string, currentForm: typeof form) => {
+    const result = profilSchema.safeParse({
+      ...currentForm,
+      deskripsi_toko: currentForm.deskripsi_toko || undefined,
+    })
+    const issue = result.success ? undefined : result.error.issues.find(i => String(i.path[0]) === field)
+    setErrors(prev => ({ ...prev, [field]: issue?.message }))
+  }
 
   const handleFotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -61,6 +66,7 @@ function ProfilPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setTouched({ nama_toko: true, nomor_wa: true, deskripsi_toko: true })
 
     const result = profilSchema.safeParse({
       ...form,
@@ -138,7 +144,15 @@ function ProfilPage() {
           <Input
             id="nama_toko"
             value={form.nama_toko}
-            onChange={set('nama_toko')}
+            onChange={(e) => {
+              const newForm = { ...form, nama_toko: e.target.value }
+              setForm(newForm)
+              if (touched.nama_toko) validateField('nama_toko', newForm)
+            }}
+            onBlur={() => {
+              setTouched(prev => ({ ...prev, nama_toko: true }))
+              validateField('nama_toko', form)
+            }}
             disabled={loading}
           />
           {errors.nama_toko && <p className="text-xs text-red-500">{errors.nama_toko}</p>}
@@ -149,7 +163,15 @@ function ProfilPage() {
           <Input
             id="nomor_wa"
             value={form.nomor_wa}
-            onChange={set('nomor_wa')}
+            onChange={(e) => {
+              const newForm = { ...form, nomor_wa: e.target.value }
+              setForm(newForm)
+              if (touched.nomor_wa) validateField('nomor_wa', newForm)
+            }}
+            onBlur={() => {
+              setTouched(prev => ({ ...prev, nomor_wa: true }))
+              validateField('nomor_wa', form)
+            }}
             placeholder="08xx atau 628xx"
             disabled={loading}
           />
@@ -161,7 +183,15 @@ function ProfilPage() {
           <Textarea
             id="deskripsi_toko"
             value={form.deskripsi_toko}
-            onChange={set('deskripsi_toko')}
+            onChange={(e) => {
+              const newForm = { ...form, deskripsi_toko: e.target.value }
+              setForm(newForm)
+              if (touched.deskripsi_toko) validateField('deskripsi_toko', newForm)
+            }}
+            onBlur={() => {
+              setTouched(prev => ({ ...prev, deskripsi_toko: true }))
+              validateField('deskripsi_toko', form)
+            }}
             rows={3}
             disabled={loading}
           />

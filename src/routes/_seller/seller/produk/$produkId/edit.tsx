@@ -32,19 +32,22 @@ export const Route = createFileRoute('/_seller/seller/produk/$produkId/edit')({
   component: EditProdukPage,
 })
 
+type FormState = {
+  nama: string
+  harga: string
+  deskripsi: string
+  kategori_id: string
+  stok_tersedia: boolean
+}
+
 function EditProdukPage() {
   const { produk, kategoriList, seller } = Route.useLoaderData()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState<Record<string, string | undefined>>({})
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
 
-  const [form, setForm] = useState<{
-    nama: string
-    harga: string
-    deskripsi: string
-    kategori_id: string
-    stok_tersedia: boolean
-  }>({
+  const [form, setForm] = useState<FormState>({
     nama: produk.nama,
     harga: produk.harga.toLocaleString('id-ID'),
     deskripsi: produk.deskripsi ?? '',
@@ -60,13 +63,23 @@ function EditProdukPage() {
     }))
   )
 
-  const set =
-    (field: keyof typeof form) =>
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-      setForm({ ...form, [field]: e.target.value })
+  const getValidationData = (currentForm: FormState) => ({
+    nama: currentForm.nama,
+    harga: Number(currentForm.harga.replace(/\D/g, '')),
+    deskripsi: currentForm.deskripsi || undefined,
+    kategori_id: currentForm.kategori_id || undefined,
+    stok_tersedia: currentForm.stok_tersedia,
+  })
+
+  const validateField = (field: string, currentForm: FormState) => {
+    const result = produkSchema.safeParse(getValidationData(currentForm))
+    const issue = result.success ? undefined : result.error.issues.find(i => String(i.path[0]) === field)
+    setErrors(prev => ({ ...prev, [field]: issue?.message }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setTouched({ nama: true, harga: true, deskripsi: true, kategori_id: true, stok_tersedia: true })
 
     const result = produkSchema.safeParse({
       nama: form.nama,
@@ -119,7 +132,20 @@ function EditProdukPage() {
 
         <div className="space-y-1">
           <Label htmlFor="nama">Nama Produk *</Label>
-          <Input id="nama" value={form.nama} onChange={set('nama')} disabled={loading} />
+          <Input
+            id="nama"
+            value={form.nama}
+            onChange={(e) => {
+              const newForm = { ...form, nama: e.target.value }
+              setForm(newForm)
+              if (touched.nama) validateField('nama', newForm)
+            }}
+            onBlur={() => {
+              setTouched(prev => ({ ...prev, nama: true }))
+              validateField('nama', form)
+            }}
+            disabled={loading}
+          />
           {errors.nama && <p className="text-xs text-red-500">{errors.nama}</p>}
         </div>
 
@@ -130,7 +156,13 @@ function EditProdukPage() {
             value={form.harga}
             onChange={(e) => {
               const raw = e.target.value.replace(/\D/g, '')
-              setForm({ ...form, harga: raw ? Number(raw).toLocaleString('id-ID') : '' })
+              const newForm = { ...form, harga: raw ? Number(raw).toLocaleString('id-ID') : '' }
+              setForm(newForm)
+              if (touched.harga) validateField('harga', newForm)
+            }}
+            onBlur={() => {
+              setTouched(prev => ({ ...prev, harga: true }))
+              validateField('harga', form)
             }}
             disabled={loading}
           />
@@ -141,7 +173,12 @@ function EditProdukPage() {
           <Label>Kategori</Label>
           <Select
             value={form.kategori_id}
-            onValueChange={(v) => setForm({ ...form, kategori_id: v ?? '' })}
+            onValueChange={(v) => {
+              const newForm = { ...form, kategori_id: v ?? '' }
+              setForm(newForm)
+              setTouched(prev => ({ ...prev, kategori_id: true }))
+              validateField('kategori_id', newForm)
+            }}
             disabled={loading}
           >
             <SelectTrigger>
@@ -176,10 +213,19 @@ function EditProdukPage() {
           <Textarea
             id="deskripsi"
             value={form.deskripsi}
-            onChange={set('deskripsi')}
+            onChange={(e) => {
+              const newForm = { ...form, deskripsi: e.target.value }
+              setForm(newForm)
+              if (touched.deskripsi) validateField('deskripsi', newForm)
+            }}
+            onBlur={() => {
+              setTouched(prev => ({ ...prev, deskripsi: true }))
+              validateField('deskripsi', form)
+            }}
             rows={4}
             disabled={loading}
           />
+          {errors.deskripsi && <p className="text-xs text-red-500">{errors.deskripsi}</p>}
         </div>
 
         <div className="flex gap-3">

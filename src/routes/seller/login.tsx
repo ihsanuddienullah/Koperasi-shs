@@ -28,11 +28,19 @@ function LoginPage() {
   const router = useRouter()
   const { redirect } = Route.useSearch()
   const [loading, setLoading] = useState(false)
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState<Record<string, string | undefined>>({})
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [form, setForm] = useState({ email: '', password: '' })
+
+  const validateField = (field: string, data: typeof form) => {
+    const result = loginSchema.safeParse(data)
+    const issue = result.success ? undefined : result.error.issues.find(i => String(i.path[0]) === field)
+    setErrors(prev => ({ ...prev, [field]: issue?.message }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setTouched({ email: true, password: true })
     const result = loginSchema.safeParse(form)
     if (!result.success) {
       const fieldErrors: Record<string, string> = {}
@@ -71,7 +79,15 @@ function LoginPage() {
                 type="email"
                 placeholder="email@contoh.com"
                 value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                onChange={(e) => {
+                  const newForm = { ...form, email: e.target.value }
+                  setForm(newForm)
+                  if (touched.email) validateField('email', newForm)
+                }}
+                onBlur={() => {
+                  setTouched(prev => ({ ...prev, email: true }))
+                  validateField('email', form)
+                }}
                 disabled={loading}
               />
               {errors.email && <p className="text-xs text-red-500">{errors.email}</p>}
@@ -83,7 +99,15 @@ function LoginPage() {
                 type="password"
                 placeholder="••••••••"
                 value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                onChange={(e) => {
+                  const newForm = { ...form, password: e.target.value }
+                  setForm(newForm)
+                  if (touched.password) validateField('password', newForm)
+                }}
+                onBlur={() => {
+                  setTouched(prev => ({ ...prev, password: true }))
+                  validateField('password', form)
+                }}
                 disabled={loading}
               />
               {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}

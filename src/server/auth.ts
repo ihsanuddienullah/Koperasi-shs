@@ -58,6 +58,7 @@ export const registerSeller = createServerFn({ method: 'POST' })
       email: data.email,
       password: data.password,
     })
+
     if (authError) {
       const msg = authError.message.toLowerCase()
       if (msg.includes('rate limit') || msg.includes('email rate limit')) {
@@ -93,7 +94,7 @@ export const registerSeller = createServerFn({ method: 'POST' })
       slug_toko,
       nomor_wa: data.nomor_wa,
       deskripsi_toko: data.deskripsi_toko ?? null,
-      is_active: false,
+      is_active: true,
     })
     if (sellerError) throw new Error(sellerError.message)
 

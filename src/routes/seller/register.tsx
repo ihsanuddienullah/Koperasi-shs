@@ -90,7 +90,7 @@ function RegisterPage() {
           <CardHeader>
             <CardTitle className="text-[#1a6b3c]">Pendaftaran Berhasil!</CardTitle>
             <CardDescription>
-              Akun Anda sedang menunggu persetujuan admin koperasi. Kami akan menghubungi Anda via email setelah akun diaktifkan.
+              Akun Anda telah berhasil dibuat. Silakan login untuk mulai berjualan.
             </CardDescription>
           </CardHeader>
           <CardContent>

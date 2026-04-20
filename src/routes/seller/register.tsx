@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { Eye, EyeOff } from 'lucide-react'
 import { Button } from '#/components/ui/button'
 import { Input } from '#/components/ui/input'
 import { Label } from '#/components/ui/label'
@@ -27,6 +28,8 @@ function RegisterPage() {
   const [errors, setErrors] = useState<Record<string, string | undefined>>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [success, setSuccess] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [form, setForm] = useState<FormState>({
     email: '',
     password: '',
@@ -156,43 +159,65 @@ function RegisterPage() {
             </div>
             <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="Minimal 8 karakter"
-                value={form.password}
-                onChange={(e) => {
-                  const newForm = { ...form, password: e.target.value }
-                  setForm(newForm)
-                  if (touched.password) validateField('password', newForm)
-                  if (touched.confirmPassword) validateField('confirmPassword', newForm)
-                }}
-                onBlur={() => {
-                  setTouched(prev => ({ ...prev, password: true }))
-                  validateField('password', form)
-                }}
-                disabled={loading}
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="Minimal 8 karakter"
+                  value={form.password}
+                  onChange={(e) => {
+                    const newForm = { ...form, password: e.target.value }
+                    setForm(newForm)
+                    if (touched.password) validateField('password', newForm)
+                    if (touched.confirmPassword) validateField('confirmPassword', newForm)
+                  }}
+                  onBlur={() => {
+                    setTouched(prev => ({ ...prev, password: true }))
+                    validateField('password', form)
+                  }}
+                  disabled={loading}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
               {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}
             </div>
             <div className="space-y-1">
               <Label htmlFor="confirmPassword">Konfirmasi Password</Label>
-              <Input
-                id="confirmPassword"
-                type="password"
-                placeholder="Ulangi password"
-                value={form.confirmPassword}
-                onChange={(e) => {
-                  const newForm = { ...form, confirmPassword: e.target.value }
-                  setForm(newForm)
-                  if (touched.confirmPassword) validateField('confirmPassword', newForm)
-                }}
-                onBlur={() => {
-                  setTouched(prev => ({ ...prev, confirmPassword: true }))
-                  validateField('confirmPassword', form)
-                }}
-                disabled={loading}
-              />
+              <div className="relative">
+                <Input
+                  id="confirmPassword"
+                  type={showConfirmPassword ? 'text' : 'password'}
+                  placeholder="Ulangi password"
+                  value={form.confirmPassword}
+                  onChange={(e) => {
+                    const newForm = { ...form, confirmPassword: e.target.value }
+                    setForm(newForm)
+                    if (touched.confirmPassword) validateField('confirmPassword', newForm)
+                  }}
+                  onBlur={() => {
+                    setTouched(prev => ({ ...prev, confirmPassword: true }))
+                    validateField('confirmPassword', form)
+                  }}
+                  disabled={loading}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  onClick={() => setShowConfirmPassword((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
               {errors.confirmPassword && <p className="text-xs text-red-500">{errors.confirmPassword}</p>}
             </div>
             <Button type="submit" className="w-full bg-[#1a6b3c] hover:bg-[#145730]" disabled={loading}>

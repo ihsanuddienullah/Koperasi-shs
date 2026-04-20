@@ -2,6 +2,7 @@ import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
 import { z } from 'zod'
 import { toast } from 'sonner'
+import { Eye, EyeOff } from 'lucide-react'
 import { Button } from '#/components/ui/button'
 import { Input } from '#/components/ui/input'
 import { Label } from '#/components/ui/label'
@@ -31,6 +32,7 @@ function LoginPage() {
   const [errors, setErrors] = useState<Record<string, string | undefined>>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [form, setForm] = useState({ email: '', password: '' })
+  const [showPassword, setShowPassword] = useState(false)
 
   const validateField = (field: string, data: typeof form) => {
     const result = loginSchema.safeParse(data)
@@ -94,22 +96,33 @@ function LoginPage() {
             </div>
             <div className="space-y-1">
               <Label htmlFor="password">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="••••••••"
-                value={form.password}
-                onChange={(e) => {
-                  const newForm = { ...form, password: e.target.value }
-                  setForm(newForm)
-                  if (touched.password) validateField('password', newForm)
-                }}
-                onBlur={() => {
-                  setTouched(prev => ({ ...prev, password: true }))
-                  validateField('password', form)
-                }}
-                disabled={loading}
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? 'text' : 'password'}
+                  placeholder="••••••••"
+                  value={form.password}
+                  onChange={(e) => {
+                    const newForm = { ...form, password: e.target.value }
+                    setForm(newForm)
+                    if (touched.password) validateField('password', newForm)
+                  }}
+                  onBlur={() => {
+                    setTouched(prev => ({ ...prev, password: true }))
+                    validateField('password', form)
+                  }}
+                  disabled={loading}
+                  className="pr-10"
+                />
+                <button
+                  type="button"
+                  tabIndex={-1}
+                  onClick={() => setShowPassword((v) => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
               {errors.password && <p className="text-xs text-red-500">{errors.password}</p>}
             </div>
             <Button

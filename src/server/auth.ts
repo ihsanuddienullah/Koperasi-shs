@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getSupabaseServerClient } from './supabase'
+import { getSupabaseServerClient, getSupabaseServiceClient } from './supabase'
 import { generateSlug } from '#/lib/slug'
 import type { Seller } from '#/lib/supabase/types'
 
@@ -76,7 +76,8 @@ export const registerSeller = createServerFn({ method: 'POST' })
       slug_toko = `${baseSlug}-${attempt}`
     }
 
-    const { error: sellerError } = await supabase.from('sellers').insert({
+    const serviceClient = getSupabaseServiceClient()
+    const { error: sellerError } = await serviceClient.from('sellers').insert({
       id: authData.user.id,
       email: data.email,
       nama_toko: data.nama_toko,

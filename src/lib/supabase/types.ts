@@ -50,7 +50,7 @@ export type WaClick = {
 }
 
 export type ProdukWithDetails = Produk & {
-  sellers: Pick<Seller, 'nama_toko' | 'slug_toko' | 'nomor_wa'>
+  sellers: Pick<Seller, 'nama_toko' | 'slug_toko' | 'nomor_wa'> | null
   kategori: Pick<Kategori, 'nama_kategori' | 'slug'> | null
   foto_utama: string | null
   foto_produk: FotoProduk[]

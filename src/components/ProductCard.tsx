@@ -32,9 +32,11 @@ export function ProductCard({ produk }: { produk: ProdukWithDetails }) {
           <p className="mt-1 text-base font-bold text-[#1a6b3c]">
             {formatRupiah(produk.harga)}
           </p>
-          <p className="mt-1 truncate text-xs text-muted-foreground">
-            {produk.sellers.nama_toko}
-          </p>
+          {produk.sellers && (
+            <p className="mt-1 truncate text-xs text-muted-foreground">
+              {produk.sellers.nama_toko}
+            </p>
+          )}
         </CardContent>
       </Card>
     </Link>

@@ -74,23 +74,25 @@ function ProdukDetailPage() {
 
           <Separator className="my-6" />
 
-          <div className="mb-6">
-            <p className="text-sm text-muted-foreground">Dijual oleh</p>
-            <Link
-              to="/toko/$slugToko"
-              params={{ slugToko: produk.sellers.slug_toko }}
-              className="font-medium text-[#1a6b3c] hover:underline"
-            >
-              {produk.sellers.nama_toko}
-            </Link>
-          </div>
+          {produk.sellers && (
+            <div className="mb-6">
+              <p className="text-sm text-muted-foreground">Dijual oleh</p>
+              <Link
+                to="/toko/$slugToko"
+                params={{ slugToko: produk.sellers.slug_toko }}
+                className="font-medium text-[#1a6b3c] hover:underline"
+              >
+                {produk.sellers.nama_toko}
+              </Link>
+            </div>
+          )}
 
           <WhatsAppButton
-            nomorWa={produk.sellers.nomor_wa}
+            nomorWa={produk.sellers?.nomor_wa ?? ''}
             namaProduk={produk.nama}
             harga={produk.harga}
             produkId={produk.id}
-            disabled={!produk.stok_tersedia}
+            disabled={!produk.stok_tersedia || !produk.sellers}
           />
         </div>
       </div>

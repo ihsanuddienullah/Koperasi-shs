@@ -19,6 +19,8 @@ export const Route = createFileRoute('/_seller')({
 function SellerLayout() {
   const { seller } = Route.useRouteContext()
 
+  if (!seller) return null
+
   return (
     <div className="flex h-[calc(100vh-3.5rem)]">
       <SellerSidebar seller={seller} />

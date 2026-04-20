@@ -6,6 +6,7 @@ import {
   createRootRoute,
 } from '@tanstack/react-router'
 import type { ReactNode } from 'react'
+import { Toaster } from 'sonner'
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 
@@ -47,6 +48,7 @@ function RootComponent() {
         <Outlet />
       </main>
       <Footer />
+      <Toaster richColors position="top-right" />
     </RootDocument>
   )
 }

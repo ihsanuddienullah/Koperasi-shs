@@ -10,20 +10,28 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TentangRouteImport } from './routes/tentang'
+import { Route as SellerRouteImport } from './routes/_seller'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProdukIndexRouteImport } from './routes/produk/index'
 import { Route as TokoSlugTokoRouteImport } from './routes/toko/$slugToko'
-import { Route as SellerProfilRouteImport } from './routes/seller/profil'
+import { Route as TokoSellerIdRouteImport } from './routes/toko/$sellerId'
+import { Route as SellerRegisterRouteImport } from './routes/seller/register'
 import { Route as SellerLoginRouteImport } from './routes/seller/login'
-import { Route as SellerDashboardRouteImport } from './routes/seller/dashboard'
 import { Route as ProdukSlugRouteImport } from './routes/produk/$slug'
-import { Route as SellerProdukIndexRouteImport } from './routes/seller/produk/index'
-import { Route as SellerProdukTambahRouteImport } from './routes/seller/produk/tambah'
-import { Route as SellerProdukProdukIdEditRouteImport } from './routes/seller/produk/$produkId/edit'
+import { Route as ProdukProdukIdRouteImport } from './routes/produk/$produkId'
+import { Route as SellerSellerProfilRouteImport } from './routes/_seller/seller/profil'
+import { Route as SellerSellerDashboardRouteImport } from './routes/_seller/seller/dashboard'
+import { Route as SellerSellerProdukIndexRouteImport } from './routes/_seller/seller/produk/index'
+import { Route as SellerSellerProdukTambahRouteImport } from './routes/_seller/seller/produk/tambah'
+import { Route as SellerSellerProdukProdukIdEditRouteImport } from './routes/_seller/seller/produk/$produkId/edit'
 
 const TentangRoute = TentangRouteImport.update({
   id: '/tentang',
   path: '/tentang',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SellerRoute = SellerRouteImport.update({
+  id: '/_seller',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -41,9 +49,14 @@ const TokoSlugTokoRoute = TokoSlugTokoRouteImport.update({
   path: '/toko/$slugToko',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SellerProfilRoute = SellerProfilRouteImport.update({
-  id: '/seller/profil',
-  path: '/seller/profil',
+const TokoSellerIdRoute = TokoSellerIdRouteImport.update({
+  id: '/toko/$sellerId',
+  path: '/toko/$sellerId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SellerRegisterRoute = SellerRegisterRouteImport.update({
+  id: '/seller/register',
+  path: '/seller/register',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SellerLoginRoute = SellerLoginRouteImport.update({
@@ -51,84 +64,108 @@ const SellerLoginRoute = SellerLoginRouteImport.update({
   path: '/seller/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SellerDashboardRoute = SellerDashboardRouteImport.update({
-  id: '/seller/dashboard',
-  path: '/seller/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ProdukSlugRoute = ProdukSlugRouteImport.update({
   id: '/produk/$slug',
   path: '/produk/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SellerProdukIndexRoute = SellerProdukIndexRouteImport.update({
+const ProdukProdukIdRoute = ProdukProdukIdRouteImport.update({
+  id: '/produk/$produkId',
+  path: '/produk/$produkId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SellerSellerProfilRoute = SellerSellerProfilRouteImport.update({
+  id: '/seller/profil',
+  path: '/seller/profil',
+  getParentRoute: () => SellerRoute,
+} as any)
+const SellerSellerDashboardRoute = SellerSellerDashboardRouteImport.update({
+  id: '/seller/dashboard',
+  path: '/seller/dashboard',
+  getParentRoute: () => SellerRoute,
+} as any)
+const SellerSellerProdukIndexRoute = SellerSellerProdukIndexRouteImport.update({
   id: '/seller/produk/',
   path: '/seller/produk/',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => SellerRoute,
 } as any)
-const SellerProdukTambahRoute = SellerProdukTambahRouteImport.update({
-  id: '/seller/produk/tambah',
-  path: '/seller/produk/tambah',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SellerProdukProdukIdEditRoute =
-  SellerProdukProdukIdEditRouteImport.update({
+const SellerSellerProdukTambahRoute =
+  SellerSellerProdukTambahRouteImport.update({
+    id: '/seller/produk/tambah',
+    path: '/seller/produk/tambah',
+    getParentRoute: () => SellerRoute,
+  } as any)
+const SellerSellerProdukProdukIdEditRoute =
+  SellerSellerProdukProdukIdEditRouteImport.update({
     id: '/seller/produk/$produkId/edit',
     path: '/seller/produk/$produkId/edit',
-    getParentRoute: () => rootRouteImport,
+    getParentRoute: () => SellerRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/tentang': typeof TentangRoute
+  '/produk/$produkId': typeof ProdukProdukIdRoute
   '/produk/$slug': typeof ProdukSlugRoute
-  '/seller/dashboard': typeof SellerDashboardRoute
   '/seller/login': typeof SellerLoginRoute
-  '/seller/profil': typeof SellerProfilRoute
+  '/seller/register': typeof SellerRegisterRoute
+  '/toko/$sellerId': typeof TokoSellerIdRoute
   '/toko/$slugToko': typeof TokoSlugTokoRoute
   '/produk/': typeof ProdukIndexRoute
-  '/seller/produk/tambah': typeof SellerProdukTambahRoute
-  '/seller/produk/': typeof SellerProdukIndexRoute
-  '/seller/produk/$produkId/edit': typeof SellerProdukProdukIdEditRoute
+  '/seller/dashboard': typeof SellerSellerDashboardRoute
+  '/seller/profil': typeof SellerSellerProfilRoute
+  '/seller/produk/tambah': typeof SellerSellerProdukTambahRoute
+  '/seller/produk/': typeof SellerSellerProdukIndexRoute
+  '/seller/produk/$produkId/edit': typeof SellerSellerProdukProdukIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/tentang': typeof TentangRoute
+  '/produk/$produkId': typeof ProdukProdukIdRoute
   '/produk/$slug': typeof ProdukSlugRoute
-  '/seller/dashboard': typeof SellerDashboardRoute
   '/seller/login': typeof SellerLoginRoute
-  '/seller/profil': typeof SellerProfilRoute
+  '/seller/register': typeof SellerRegisterRoute
+  '/toko/$sellerId': typeof TokoSellerIdRoute
   '/toko/$slugToko': typeof TokoSlugTokoRoute
   '/produk': typeof ProdukIndexRoute
-  '/seller/produk/tambah': typeof SellerProdukTambahRoute
-  '/seller/produk': typeof SellerProdukIndexRoute
-  '/seller/produk/$produkId/edit': typeof SellerProdukProdukIdEditRoute
+  '/seller/dashboard': typeof SellerSellerDashboardRoute
+  '/seller/profil': typeof SellerSellerProfilRoute
+  '/seller/produk/tambah': typeof SellerSellerProdukTambahRoute
+  '/seller/produk': typeof SellerSellerProdukIndexRoute
+  '/seller/produk/$produkId/edit': typeof SellerSellerProdukProdukIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_seller': typeof SellerRouteWithChildren
   '/tentang': typeof TentangRoute
+  '/produk/$produkId': typeof ProdukProdukIdRoute
   '/produk/$slug': typeof ProdukSlugRoute
-  '/seller/dashboard': typeof SellerDashboardRoute
   '/seller/login': typeof SellerLoginRoute
-  '/seller/profil': typeof SellerProfilRoute
+  '/seller/register': typeof SellerRegisterRoute
+  '/toko/$sellerId': typeof TokoSellerIdRoute
   '/toko/$slugToko': typeof TokoSlugTokoRoute
   '/produk/': typeof ProdukIndexRoute
-  '/seller/produk/tambah': typeof SellerProdukTambahRoute
-  '/seller/produk/': typeof SellerProdukIndexRoute
-  '/seller/produk/$produkId/edit': typeof SellerProdukProdukIdEditRoute
+  '/_seller/seller/dashboard': typeof SellerSellerDashboardRoute
+  '/_seller/seller/profil': typeof SellerSellerProfilRoute
+  '/_seller/seller/produk/tambah': typeof SellerSellerProdukTambahRoute
+  '/_seller/seller/produk/': typeof SellerSellerProdukIndexRoute
+  '/_seller/seller/produk/$produkId/edit': typeof SellerSellerProdukProdukIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/tentang'
+    | '/produk/$produkId'
     | '/produk/$slug'
-    | '/seller/dashboard'
     | '/seller/login'
-    | '/seller/profil'
+    | '/seller/register'
+    | '/toko/$sellerId'
     | '/toko/$slugToko'
     | '/produk/'
+    | '/seller/dashboard'
+    | '/seller/profil'
     | '/seller/produk/tambah'
     | '/seller/produk/'
     | '/seller/produk/$produkId/edit'
@@ -136,42 +173,48 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/tentang'
+    | '/produk/$produkId'
     | '/produk/$slug'
-    | '/seller/dashboard'
     | '/seller/login'
-    | '/seller/profil'
+    | '/seller/register'
+    | '/toko/$sellerId'
     | '/toko/$slugToko'
     | '/produk'
+    | '/seller/dashboard'
+    | '/seller/profil'
     | '/seller/produk/tambah'
     | '/seller/produk'
     | '/seller/produk/$produkId/edit'
   id:
     | '__root__'
     | '/'
+    | '/_seller'
     | '/tentang'
+    | '/produk/$produkId'
     | '/produk/$slug'
-    | '/seller/dashboard'
     | '/seller/login'
-    | '/seller/profil'
+    | '/seller/register'
+    | '/toko/$sellerId'
     | '/toko/$slugToko'
     | '/produk/'
-    | '/seller/produk/tambah'
-    | '/seller/produk/'
-    | '/seller/produk/$produkId/edit'
+    | '/_seller/seller/dashboard'
+    | '/_seller/seller/profil'
+    | '/_seller/seller/produk/tambah'
+    | '/_seller/seller/produk/'
+    | '/_seller/seller/produk/$produkId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SellerRoute: typeof SellerRouteWithChildren
   TentangRoute: typeof TentangRoute
+  ProdukProdukIdRoute: typeof ProdukProdukIdRoute
   ProdukSlugRoute: typeof ProdukSlugRoute
-  SellerDashboardRoute: typeof SellerDashboardRoute
   SellerLoginRoute: typeof SellerLoginRoute
-  SellerProfilRoute: typeof SellerProfilRoute
+  SellerRegisterRoute: typeof SellerRegisterRoute
+  TokoSellerIdRoute: typeof TokoSellerIdRoute
   TokoSlugTokoRoute: typeof TokoSlugTokoRoute
   ProdukIndexRoute: typeof ProdukIndexRoute
-  SellerProdukTambahRoute: typeof SellerProdukTambahRoute
-  SellerProdukIndexRoute: typeof SellerProdukIndexRoute
-  SellerProdukProdukIdEditRoute: typeof SellerProdukProdukIdEditRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -181,6 +224,13 @@ declare module '@tanstack/react-router' {
       path: '/tentang'
       fullPath: '/tentang'
       preLoaderRoute: typeof TentangRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_seller': {
+      id: '/_seller'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof SellerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -204,11 +254,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TokoSlugTokoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/seller/profil': {
-      id: '/seller/profil'
-      path: '/seller/profil'
-      fullPath: '/seller/profil'
-      preLoaderRoute: typeof SellerProfilRouteImport
+    '/toko/$sellerId': {
+      id: '/toko/$sellerId'
+      path: '/toko/$sellerId'
+      fullPath: '/toko/$sellerId'
+      preLoaderRoute: typeof TokoSellerIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/seller/register': {
+      id: '/seller/register'
+      path: '/seller/register'
+      fullPath: '/seller/register'
+      preLoaderRoute: typeof SellerRegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/seller/login': {
@@ -218,13 +275,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SellerLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/seller/dashboard': {
-      id: '/seller/dashboard'
-      path: '/seller/dashboard'
-      fullPath: '/seller/dashboard'
-      preLoaderRoute: typeof SellerDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/produk/$slug': {
       id: '/produk/$slug'
       path: '/produk/$slug'
@@ -232,42 +282,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProdukSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/seller/produk/': {
-      id: '/seller/produk/'
+    '/produk/$produkId': {
+      id: '/produk/$produkId'
+      path: '/produk/$produkId'
+      fullPath: '/produk/$produkId'
+      preLoaderRoute: typeof ProdukProdukIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_seller/seller/profil': {
+      id: '/_seller/seller/profil'
+      path: '/seller/profil'
+      fullPath: '/seller/profil'
+      preLoaderRoute: typeof SellerSellerProfilRouteImport
+      parentRoute: typeof SellerRoute
+    }
+    '/_seller/seller/dashboard': {
+      id: '/_seller/seller/dashboard'
+      path: '/seller/dashboard'
+      fullPath: '/seller/dashboard'
+      preLoaderRoute: typeof SellerSellerDashboardRouteImport
+      parentRoute: typeof SellerRoute
+    }
+    '/_seller/seller/produk/': {
+      id: '/_seller/seller/produk/'
       path: '/seller/produk'
       fullPath: '/seller/produk/'
-      preLoaderRoute: typeof SellerProdukIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof SellerSellerProdukIndexRouteImport
+      parentRoute: typeof SellerRoute
     }
-    '/seller/produk/tambah': {
-      id: '/seller/produk/tambah'
+    '/_seller/seller/produk/tambah': {
+      id: '/_seller/seller/produk/tambah'
       path: '/seller/produk/tambah'
       fullPath: '/seller/produk/tambah'
-      preLoaderRoute: typeof SellerProdukTambahRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof SellerSellerProdukTambahRouteImport
+      parentRoute: typeof SellerRoute
     }
-    '/seller/produk/$produkId/edit': {
-      id: '/seller/produk/$produkId/edit'
+    '/_seller/seller/produk/$produkId/edit': {
+      id: '/_seller/seller/produk/$produkId/edit'
       path: '/seller/produk/$produkId/edit'
       fullPath: '/seller/produk/$produkId/edit'
-      preLoaderRoute: typeof SellerProdukProdukIdEditRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof SellerSellerProdukProdukIdEditRouteImport
+      parentRoute: typeof SellerRoute
     }
   }
 }
 
+interface SellerRouteChildren {
+  SellerSellerDashboardRoute: typeof SellerSellerDashboardRoute
+  SellerSellerProfilRoute: typeof SellerSellerProfilRoute
+  SellerSellerProdukTambahRoute: typeof SellerSellerProdukTambahRoute
+  SellerSellerProdukIndexRoute: typeof SellerSellerProdukIndexRoute
+  SellerSellerProdukProdukIdEditRoute: typeof SellerSellerProdukProdukIdEditRoute
+}
+
+const SellerRouteChildren: SellerRouteChildren = {
+  SellerSellerDashboardRoute: SellerSellerDashboardRoute,
+  SellerSellerProfilRoute: SellerSellerProfilRoute,
+  SellerSellerProdukTambahRoute: SellerSellerProdukTambahRoute,
+  SellerSellerProdukIndexRoute: SellerSellerProdukIndexRoute,
+  SellerSellerProdukProdukIdEditRoute: SellerSellerProdukProdukIdEditRoute,
+}
+
+const SellerRouteWithChildren =
+  SellerRoute._addFileChildren(SellerRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SellerRoute: SellerRouteWithChildren,
   TentangRoute: TentangRoute,
+  ProdukProdukIdRoute: ProdukProdukIdRoute,
   ProdukSlugRoute: ProdukSlugRoute,
-  SellerDashboardRoute: SellerDashboardRoute,
   SellerLoginRoute: SellerLoginRoute,
-  SellerProfilRoute: SellerProfilRoute,
+  SellerRegisterRoute: SellerRegisterRoute,
+  TokoSellerIdRoute: TokoSellerIdRoute,
   TokoSlugTokoRoute: TokoSlugTokoRoute,
   ProdukIndexRoute: ProdukIndexRoute,
-  SellerProdukTambahRoute: SellerProdukTambahRoute,
-  SellerProdukIndexRoute: SellerProdukIndexRoute,
-  SellerProdukProdukIdEditRoute: SellerProdukProdukIdEditRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

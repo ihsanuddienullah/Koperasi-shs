@@ -1,7 +1,20 @@
 {
   "permissions": {
     "allow": [
-      "Bash(pnpm --version)"
+      "Bash(pnpm --version)",
+      "Bash(pnpm typecheck *)",
+      "Bash(rtk ls *)",
+      "Bash(rm -f 'src/routes/seller/produk/$produkId/edit.tsx')",
+      "Bash(rmdir 'src/routes/seller/produk/$produkId')",
+      "Bash(rmdir \"src/routes/seller/produk\")",
+      "Bash(mkdir -p 'src/routes/_seller/seller/produk/$produkId')",
+      "Bash(rtk grep *)",
+      "Bash(node -e \"const p = require\\('@base-ui-components/react/package.json'\\); console.log\\(p.version\\)\")",
+      "Bash(rtk pnpm *)",
+      "Bash(rtk read *)",
+      "Bash(node -e ' *)",
+      "Bash(rtk find *)",
+      "Bash(rtk git *)"
     ]
   }
 }

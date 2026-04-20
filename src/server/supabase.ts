@@ -1,6 +1,7 @@
 import 'server-only'
 import { createServerClient } from '@supabase/ssr'
 import { getCookies, setCookie } from '@tanstack/react-start/server'
+import { createClient } from '@supabase/supabase-js'
 
 export function getSupabaseServerClient() {
   return createServerClient(
@@ -22,5 +23,14 @@ export function getSupabaseServerClient() {
         },
       },
     }
+  )
+}
+
+// Service role client — bypass RLS, hanya untuk server-side admin operations
+export function getSupabaseServiceClient() {
+  return createClient(
+    process.env.VITE_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { persistSession: false } }
   )
 }

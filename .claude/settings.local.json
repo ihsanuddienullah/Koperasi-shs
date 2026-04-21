@@ -14,7 +14,10 @@
       "Bash(rtk read *)",
       "Bash(node -e ' *)",
       "Bash(rtk find *)",
-      "Bash(rtk git *)"
+      "Bash(rtk git *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
     ]
   }
 }

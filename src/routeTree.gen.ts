@@ -18,7 +18,6 @@ import { Route as TokoSellerIdRouteImport } from './routes/toko/$sellerId'
 import { Route as SellerRegisterRouteImport } from './routes/seller/register'
 import { Route as SellerLoginRouteImport } from './routes/seller/login'
 import { Route as ProdukSlugRouteImport } from './routes/produk/$slug'
-import { Route as ProdukProdukIdRouteImport } from './routes/produk/$produkId'
 import { Route as SellerSellerProfilRouteImport } from './routes/_seller/seller/profil'
 import { Route as SellerSellerDashboardRouteImport } from './routes/_seller/seller/dashboard'
 import { Route as SellerSellerProdukIndexRouteImport } from './routes/_seller/seller/produk/index'
@@ -69,11 +68,6 @@ const ProdukSlugRoute = ProdukSlugRouteImport.update({
   path: '/produk/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProdukProdukIdRoute = ProdukProdukIdRouteImport.update({
-  id: '/produk/$produkId',
-  path: '/produk/$produkId',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SellerSellerProfilRoute = SellerSellerProfilRouteImport.update({
   id: '/seller/profil',
   path: '/seller/profil',
@@ -105,7 +99,6 @@ const SellerSellerProdukProdukIdEditRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/tentang': typeof TentangRoute
-  '/produk/$produkId': typeof ProdukProdukIdRoute
   '/produk/$slug': typeof ProdukSlugRoute
   '/seller/login': typeof SellerLoginRoute
   '/seller/register': typeof SellerRegisterRoute
@@ -121,7 +114,6 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/tentang': typeof TentangRoute
-  '/produk/$produkId': typeof ProdukProdukIdRoute
   '/produk/$slug': typeof ProdukSlugRoute
   '/seller/login': typeof SellerLoginRoute
   '/seller/register': typeof SellerRegisterRoute
@@ -139,7 +131,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_seller': typeof SellerRouteWithChildren
   '/tentang': typeof TentangRoute
-  '/produk/$produkId': typeof ProdukProdukIdRoute
   '/produk/$slug': typeof ProdukSlugRoute
   '/seller/login': typeof SellerLoginRoute
   '/seller/register': typeof SellerRegisterRoute
@@ -157,7 +148,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/tentang'
-    | '/produk/$produkId'
     | '/produk/$slug'
     | '/seller/login'
     | '/seller/register'
@@ -173,7 +163,6 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/tentang'
-    | '/produk/$produkId'
     | '/produk/$slug'
     | '/seller/login'
     | '/seller/register'
@@ -190,7 +179,6 @@ export interface FileRouteTypes {
     | '/'
     | '/_seller'
     | '/tentang'
-    | '/produk/$produkId'
     | '/produk/$slug'
     | '/seller/login'
     | '/seller/register'
@@ -208,7 +196,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   SellerRoute: typeof SellerRouteWithChildren
   TentangRoute: typeof TentangRoute
-  ProdukProdukIdRoute: typeof ProdukProdukIdRoute
   ProdukSlugRoute: typeof ProdukSlugRoute
   SellerLoginRoute: typeof SellerLoginRoute
   SellerRegisterRoute: typeof SellerRegisterRoute
@@ -282,13 +269,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProdukSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/produk/$produkId': {
-      id: '/produk/$produkId'
-      path: '/produk/$produkId'
-      fullPath: '/produk/$produkId'
-      preLoaderRoute: typeof ProdukProdukIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/_seller/seller/profil': {
       id: '/_seller/seller/profil'
       path: '/seller/profil'
@@ -350,7 +330,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   SellerRoute: SellerRouteWithChildren,
   TentangRoute: TentangRoute,
-  ProdukProdukIdRoute: ProdukProdukIdRoute,
   ProdukSlugRoute: ProdukSlugRoute,
   SellerLoginRoute: SellerLoginRoute,
   SellerRegisterRoute: SellerRegisterRoute,

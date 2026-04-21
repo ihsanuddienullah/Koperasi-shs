@@ -1,5 +1,4 @@
 import { Link } from '@tanstack/react-router'
-import { Badge } from '#/components/ui/badge'
 
 type ProdukPerforma = {
   produk_id: string
@@ -11,52 +10,73 @@ type ProdukPerforma = {
 
 export function ProdukTable({ data }: { data: ProdukPerforma[] }) {
   return (
-    <div className="rounded-lg border bg-white">
-      <div className="border-b p-4">
-        <h3 className="text-sm font-semibold">Performa Produk Bulan Ini</h3>
+    <div className="overflow-hidden rounded-2xl border border-[#e5e7eb] bg-white shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
+      <div className="border-b border-[#e5e7eb] px-6 py-4">
+        <p className="mb-0.5 text-xs font-semibold uppercase tracking-wider text-[#9ca3af]">
+          Performa
+        </p>
+        <h3
+          className="text-sm font-semibold text-[#111827]"
+          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+        >
+          Produk Bulan Ini
+        </h3>
       </div>
       {data.length === 0 ? (
-        <p className="p-6 text-center text-sm text-muted-foreground">
-          Belum ada produk.{' '}
-          <Link to="/seller/produk/tambah" className="text-[#1a6b3c] hover:underline">
+        <div className="flex flex-col items-center gap-2 py-12 text-center">
+          <span className="text-4xl">📦</span>
+          <p className="text-sm text-[#9ca3af]">Belum ada produk.</p>
+          <Link
+            to="/seller/produk/tambah"
+            className="mt-1 text-sm font-medium text-[#2d6a4f] hover:underline"
+          >
             Tambah produk pertama Anda.
           </Link>
-        </p>
+        </div>
       ) : (
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b bg-gray-50">
-              <th className="px-4 py-3 text-left font-medium text-muted-foreground">Produk</th>
-              <th className="px-4 py-3 text-center font-medium text-muted-foreground">Stok</th>
-              <th className="px-4 py-3 text-right font-medium text-muted-foreground">Klik WA</th>
+            <tr className="border-b border-[#f3f4f6] bg-[#f9fafb]">
+              <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-wider text-[#9ca3af]">
+                Produk
+              </th>
+              <th className="px-6 py-3 text-center text-xs font-semibold uppercase tracking-wider text-[#9ca3af]">
+                Stok
+              </th>
+              <th className="px-6 py-3 text-right text-xs font-semibold uppercase tracking-wider text-[#9ca3af]">
+                Klik WA
+              </th>
             </tr>
           </thead>
           <tbody>
             {data.map((p) => (
-              <tr key={p.produk_id} className="border-b last:border-0 hover:bg-gray-50">
-                <td className="px-4 py-3">
+              <tr
+                key={p.produk_id}
+                className="border-b border-[#f3f4f6] last:border-0 hover:bg-[#f9fafb]"
+              >
+                <td className="px-6 py-3.5">
                   <Link
                     to="/produk/$slug"
                     params={{ slug: p.slug }}
-                    className="font-medium hover:text-[#1a6b3c] hover:underline"
+                    className="font-medium text-[#111827] hover:text-[#2d6a4f] hover:underline"
                     target="_blank"
                   >
                     {p.nama}
                   </Link>
                 </td>
-                <td className="px-4 py-3 text-center">
-                  <Badge
-                    className={
+                <td className="px-6 py-3.5 text-center">
+                  <span
+                    className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
                       p.stok_tersedia
-                        ? 'bg-green-100 text-green-800 hover:bg-green-100'
-                        : 'bg-red-100 text-red-800 hover:bg-red-100'
-                    }
+                        ? 'bg-[#d8f3dc] text-[#2d6a4f]'
+                        : 'bg-red-100 text-red-700'
+                    }`}
                   >
-                    {p.stok_tersedia ? 'Ada' : 'Habis'}
-                  </Badge>
+                    {p.stok_tersedia ? 'Tersedia' : 'Habis'}
+                  </span>
                 </td>
-                <td className="px-4 py-3 text-right font-semibold text-[#1a6b3c]">
-                  {p.klik_bulan_ini}
+                <td className="px-6 py-3.5 text-right">
+                  <span className="font-bold text-[#128C7E]">{p.klik_bulan_ini}</span>
                 </td>
               </tr>
             ))}

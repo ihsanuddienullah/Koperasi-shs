@@ -25,7 +25,7 @@ export function ProductCard({ produk }: { produk: ProdukWithDetails }) {
           {produk.kategori && (
             <div className="absolute left-2 top-2">
               <span className="rounded-full bg-white/90 px-2.5 py-0.5 text-xs font-medium text-[#2d6a4f] shadow-sm backdrop-blur-sm">
-                {produk.kategori}
+                {produk.kategori.nama_kategori}
               </span>
             </div>
           )}

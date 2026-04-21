@@ -37,7 +37,7 @@ export const Route = createRootRoute({
       <p className="mt-2 text-muted-foreground">
         Halaman yang Anda cari tidak ada.
       </p>
-      <Link to="/" className="mt-4 text-[#1a6b3c] hover:underline">
+      <Link to="/" className="mt-4 flex items-center gap-1 text-sm font-medium text-[#2d6a4f] hover:underline">
         ← Kembali ke beranda
       </Link>
     </div>

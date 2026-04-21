@@ -1,10 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { Button } from '#/components/ui/button'
-import { Input } from '#/components/ui/input'
-import { Label } from '#/components/ui/label'
-import { Textarea } from '#/components/ui/textarea'
+import { Camera, Link as LinkIcon } from 'lucide-react'
 import { updateSellerProfil } from '#/server/auth'
 import { profilSchema, fotoSchema } from '#/lib/schemas'
 import { createClient } from '#/lib/supabase/client'
@@ -26,6 +23,13 @@ function ProfilPage() {
     deskripsi_toko: seller.deskripsi_toko ?? '',
   })
   const [fotoToko, setFotoToko] = useState(seller.foto_toko_url ?? '')
+
+  const initials = seller.nama_toko
+    .split(' ')
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase()
 
   const validateField = (field: string, currentForm: typeof form) => {
     const result = profilSchema.safeParse({
@@ -101,47 +105,69 @@ function ProfilPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
+      {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold">Profil Toko</h1>
-        <p className="text-sm text-muted-foreground">Kelola informasi toko Anda</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#d97706]">
+          ✦ Akun
+        </p>
+        <h1
+          className="text-2xl font-extrabold text-[#1a4d2e]"
+          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+        >
+          Profil Toko
+        </h1>
+        <p className="text-sm text-[#9ca3af]">Kelola informasi toko Anda</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6 rounded-lg border bg-white p-6">
-        {/* Foto Toko */}
-        <div className="space-y-2">
-          <Label>Foto Toko</Label>
-          <div className="flex items-center gap-4">
-            <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-full border bg-gray-100">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-5 rounded-2xl border border-[#e5e7eb] bg-white p-6 shadow-[0_1px_4px_rgba(0,0,0,0.06)]"
+      >
+        {/* Avatar section */}
+        <div className="flex items-center gap-5">
+          <div className="relative flex-shrink-0">
+            <div className="h-20 w-20 overflow-hidden rounded-full ring-2 ring-[#2d6a4f]/20">
               {fotoToko ? (
                 <img src={fotoToko} alt="Foto toko" className="h-full w-full object-cover" />
               ) : (
-                <div className="flex h-full items-center justify-center text-xs text-gray-400">
-                  No foto
+                <div className="flex h-full w-full items-center justify-center bg-[#2d6a4f] text-xl font-bold text-white">
+                  {initials}
                 </div>
               )}
             </div>
-            <div>
-              <label htmlFor="foto-toko" className="cursor-pointer">
-                <span className="rounded-md border px-3 py-2 text-sm hover:bg-gray-50">
-                  {uploadingFoto ? 'Mengupload...' : 'Ganti Foto'}
-                </span>
-                <input
-                  id="foto-toko"
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  onChange={handleFotoChange}
-                  className="hidden"
-                  disabled={uploadingFoto}
-                />
-              </label>
-              <p className="mt-1 text-xs text-muted-foreground">JPG, PNG, WebP • Maks 2MB</p>
-            </div>
+            {uploadingFoto && (
+              <div className="absolute inset-0 flex items-center justify-center rounded-full bg-black/40">
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              </div>
+            )}
+          </div>
+          <div>
+            <label htmlFor="foto-toko" className="cursor-pointer">
+              <span className="flex items-center gap-2 rounded-full border-[1.5px] border-[#e5e7eb] px-4 py-2 text-sm font-medium text-[#4b5563] transition-all hover:border-[#2d6a4f] hover:text-[#2d6a4f]">
+                <Camera className="h-4 w-4" />
+                {uploadingFoto ? 'Mengupload...' : 'Ganti Foto'}
+              </span>
+              <input
+                id="foto-toko"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={handleFotoChange}
+                className="hidden"
+                disabled={uploadingFoto}
+              />
+            </label>
+            <p className="mt-1.5 text-xs text-[#9ca3af]">JPG, PNG, WebP • Maks 2MB</p>
           </div>
         </div>
 
-        <div className="space-y-1">
-          <Label htmlFor="nama_toko">Nama Toko *</Label>
-          <Input
+        <div className="h-px bg-[#f3f4f6]" />
+
+        {/* Nama toko */}
+        <div className="space-y-1.5">
+          <label htmlFor="nama_toko" className="text-xs font-semibold uppercase tracking-wider text-[#4b5563]">
+            Nama Toko <span className="text-red-400">*</span>
+          </label>
+          <input
             id="nama_toko"
             value={form.nama_toko}
             onChange={(e) => {
@@ -154,13 +180,17 @@ function ProfilPage() {
               validateField('nama_toko', form)
             }}
             disabled={loading}
+            className="w-full rounded-xl border-[1.5px] border-[#e5e7eb] bg-white px-4 py-2.5 text-sm text-[#111827] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10 disabled:opacity-60"
           />
           {errors.nama_toko && <p className="text-xs text-red-500">{errors.nama_toko}</p>}
         </div>
 
-        <div className="space-y-1">
-          <Label htmlFor="nomor_wa">Nomor WhatsApp *</Label>
-          <Input
+        {/* Nomor WA */}
+        <div className="space-y-1.5">
+          <label htmlFor="nomor_wa" className="text-xs font-semibold uppercase tracking-wider text-[#4b5563]">
+            Nomor WhatsApp <span className="text-red-400">*</span>
+          </label>
+          <input
             id="nomor_wa"
             value={form.nomor_wa}
             onChange={(e) => {
@@ -174,13 +204,17 @@ function ProfilPage() {
             }}
             placeholder="08xx atau 628xx"
             disabled={loading}
+            className="w-full rounded-xl border-[1.5px] border-[#e5e7eb] bg-white px-4 py-2.5 text-sm text-[#111827] placeholder:text-[#9ca3af] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10 disabled:opacity-60"
           />
           {errors.nomor_wa && <p className="text-xs text-red-500">{errors.nomor_wa}</p>}
         </div>
 
-        <div className="space-y-1">
-          <Label htmlFor="deskripsi_toko">Deskripsi Toko (opsional)</Label>
-          <Textarea
+        {/* Deskripsi */}
+        <div className="space-y-1.5">
+          <label htmlFor="deskripsi_toko" className="text-xs font-semibold uppercase tracking-wider text-[#4b5563]">
+            Deskripsi Toko <span className="normal-case text-[#9ca3af]">(opsional)</span>
+          </label>
+          <textarea
             id="deskripsi_toko"
             value={form.deskripsi_toko}
             onChange={(e) => {
@@ -194,22 +228,37 @@ function ProfilPage() {
             }}
             rows={3}
             disabled={loading}
+            placeholder="Ceritakan tentang toko Anda..."
+            className="w-full resize-none rounded-xl border-[1.5px] border-[#e5e7eb] bg-white px-4 py-2.5 text-sm text-[#111827] placeholder:text-[#9ca3af] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10 disabled:opacity-60"
           />
         </div>
 
-        <div className="rounded-md bg-gray-50 p-3 text-sm">
-          <p className="font-medium">Info Toko</p>
-          <p className="text-muted-foreground">Email: {seller.email}</p>
-          <p className="text-muted-foreground">URL Toko: /toko/{seller.slug_toko}</p>
+        {/* Read-only info box */}
+        <div className="rounded-xl bg-[#f3f4f6] p-4">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-[#9ca3af]">
+            Info Akun (read-only)
+          </p>
+          <div className="space-y-1 text-sm">
+            <p className="text-[#4b5563]">
+              <span className="font-medium text-[#111827]">Email:</span> {seller.email}
+            </p>
+            <div className="flex items-center gap-1.5">
+              <LinkIcon className="h-3.5 w-3.5 text-[#9ca3af]" />
+              <span className="font-medium text-[#111827]">URL Toko:</span>
+              <span className="text-[#2d6a4f]">/toko/{seller.slug_toko}</span>
+            </div>
+          </div>
         </div>
 
-        <Button
+        <div className="h-px bg-[#f3f4f6]" />
+
+        <button
           type="submit"
-          className="bg-[#1a6b3c] hover:bg-[#145730]"
           disabled={loading || uploadingFoto}
+          className="rounded-full bg-[#2d6a4f] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_4px_16px_rgba(45,106,79,0.25)] transition-all hover:bg-[#40916c] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? 'Menyimpan...' : 'Simpan Profil'}
-        </Button>
+        </button>
       </form>
     </div>
   )

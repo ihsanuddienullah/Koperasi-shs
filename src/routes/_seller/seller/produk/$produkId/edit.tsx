@@ -1,10 +1,6 @@
 import { createFileRoute, notFound, useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { Button } from '#/components/ui/button'
-import { Input } from '#/components/ui/input'
-import { Label } from '#/components/ui/label'
-import { Textarea } from '#/components/ui/textarea'
 import {
   Select,
   SelectContent,
@@ -27,7 +23,7 @@ export const Route = createFileRoute('/_seller/seller/produk/$produkId/edit')({
     return { produk, kategoriList, seller: (context as { seller: Seller }).seller }
   },
   notFoundComponent: () => (
-    <div className="py-12 text-center text-muted-foreground">Produk tidak ditemukan.</div>
+    <div className="py-12 text-center text-[#9ca3af]">Produk tidak ditemukan.</div>
   ),
   component: EditProdukPage,
 })
@@ -119,20 +115,40 @@ function EditProdukPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
+      {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold">Edit Produk</h1>
-        <p className="text-sm text-muted-foreground">{produk.nama}</p>
+        <p className="text-xs font-semibold uppercase tracking-wider text-[#d97706]">
+          ✦ Inventori
+        </p>
+        <h1
+          className="text-2xl font-extrabold text-[#1a4d2e]"
+          style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+        >
+          Edit Produk
+        </h1>
+        <p className="text-sm text-[#9ca3af]">{produk.nama}</p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6 rounded-lg border bg-white p-6">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-5 rounded-2xl border border-[#e5e7eb] bg-white p-6 shadow-[0_1px_4px_rgba(0,0,0,0.06)]"
+      >
+        {/* Foto */}
         <div className="space-y-2">
-          <Label>Foto Produk (maks. 5)</Label>
+          <label className="text-xs font-semibold uppercase tracking-wider text-[#4b5563]">
+            Foto Produk <span className="normal-case text-[#9ca3af]">(maks. 5)</span>
+          </label>
           <FotoUpload sellerId={seller.id} value={fotos} onChange={setFotos} />
         </div>
 
-        <div className="space-y-1">
-          <Label htmlFor="nama">Nama Produk *</Label>
-          <Input
+        <div className="h-px bg-[#f3f4f6]" />
+
+        {/* Nama */}
+        <div className="space-y-1.5">
+          <label htmlFor="nama" className="text-xs font-semibold uppercase tracking-wider text-[#4b5563]">
+            Nama Produk <span className="text-red-400">*</span>
+          </label>
+          <input
             id="nama"
             value={form.nama}
             onChange={(e) => {
@@ -145,13 +161,17 @@ function EditProdukPage() {
               validateField('nama', form)
             }}
             disabled={loading}
+            className="w-full rounded-xl border-[1.5px] border-[#e5e7eb] bg-white px-4 py-2.5 text-sm text-[#111827] placeholder:text-[#9ca3af] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10 disabled:opacity-60"
           />
           {errors.nama && <p className="text-xs text-red-500">{errors.nama}</p>}
         </div>
 
-        <div className="space-y-1">
-          <Label htmlFor="harga">Harga (Rp) *</Label>
-          <Input
+        {/* Harga */}
+        <div className="space-y-1.5">
+          <label htmlFor="harga" className="text-xs font-semibold uppercase tracking-wider text-[#4b5563]">
+            Harga (Rp) <span className="text-red-400">*</span>
+          </label>
+          <input
             id="harga"
             value={form.harga}
             onChange={(e) => {
@@ -165,12 +185,16 @@ function EditProdukPage() {
               validateField('harga', form)
             }}
             disabled={loading}
+            className="w-full rounded-xl border-[1.5px] border-[#e5e7eb] bg-white px-4 py-2.5 text-sm text-[#111827] placeholder:text-[#9ca3af] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10 disabled:opacity-60"
           />
           {errors.harga && <p className="text-xs text-red-500">{errors.harga}</p>}
         </div>
 
-        <div className="space-y-1">
-          <Label>Kategori</Label>
+        {/* Kategori */}
+        <div className="space-y-1.5">
+          <label className="text-xs font-semibold uppercase tracking-wider text-[#4b5563]">
+            Kategori <span className="normal-case text-[#9ca3af]">(opsional)</span>
+          </label>
           <Select
             value={form.kategori_id}
             onValueChange={(v) => {
@@ -181,8 +205,8 @@ function EditProdukPage() {
             }}
             disabled={loading}
           >
-            <SelectTrigger>
-              <SelectValue placeholder="Pilih kategori (opsional)" />
+            <SelectTrigger className="rounded-xl border-[1.5px] border-[#e5e7eb] bg-white focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10">
+              <SelectValue placeholder="Pilih kategori" />
             </SelectTrigger>
             <SelectContent>
               {kategoriList.map((k) => (
@@ -194,23 +218,42 @@ function EditProdukPage() {
           </Select>
         </div>
 
-        <div className="flex items-center gap-3">
-          <input
-            type="checkbox"
-            id="stok"
-            checked={form.stok_tersedia}
-            onChange={(e) => setForm({ ...form, stok_tersedia: e.target.checked })}
+        {/* Stok toggle */}
+        <div className="space-y-1.5">
+          <label className="text-xs font-semibold uppercase tracking-wider text-[#4b5563]">
+            Status Stok
+          </label>
+          <button
+            type="button"
+            onClick={() => setForm(f => ({ ...f, stok_tersedia: !f.stok_tersedia }))}
             disabled={loading}
-            className="h-4 w-4 accent-[#1a6b3c]"
-          />
-          <Label htmlFor="stok" className="cursor-pointer">
-            Stok tersedia
-          </Label>
+            className={`flex items-center gap-3 rounded-xl border-[1.5px] px-4 py-2.5 text-sm font-medium transition-all disabled:opacity-60 ${
+              form.stok_tersedia
+                ? 'border-[#2d6a4f] bg-[#eaf7ed] text-[#2d6a4f]'
+                : 'border-[#e5e7eb] bg-white text-[#9ca3af]'
+            }`}
+          >
+            <div
+              className={`relative h-5 w-9 rounded-full transition-colors ${
+                form.stok_tersedia ? 'bg-[#2d6a4f]' : 'bg-[#d1d5db]'
+              }`}
+            >
+              <div
+                className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${
+                  form.stok_tersedia ? 'translate-x-4' : 'translate-x-0.5'
+                }`}
+              />
+            </div>
+            {form.stok_tersedia ? 'Stok tersedia' : 'Stok habis'}
+          </button>
         </div>
 
-        <div className="space-y-1">
-          <Label htmlFor="deskripsi">Deskripsi (opsional)</Label>
-          <Textarea
+        {/* Deskripsi */}
+        <div className="space-y-1.5">
+          <label htmlFor="deskripsi" className="text-xs font-semibold uppercase tracking-wider text-[#4b5563]">
+            Deskripsi <span className="normal-case text-[#9ca3af]">(opsional)</span>
+          </label>
+          <textarea
             id="deskripsi"
             value={form.deskripsi}
             onChange={(e) => {
@@ -224,26 +267,30 @@ function EditProdukPage() {
             }}
             rows={4}
             disabled={loading}
+            className="w-full resize-none rounded-xl border-[1.5px] border-[#e5e7eb] bg-white px-4 py-2.5 text-sm text-[#111827] placeholder:text-[#9ca3af] outline-none transition-all focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10 disabled:opacity-60"
           />
           {errors.deskripsi && <p className="text-xs text-red-500">{errors.deskripsi}</p>}
         </div>
 
+        <div className="h-px bg-[#f3f4f6]" />
+
+        {/* Actions */}
         <div className="flex gap-3">
-          <Button
+          <button
             type="submit"
-            className="bg-[#1a6b3c] hover:bg-[#145730]"
             disabled={loading}
+            className="rounded-full bg-[#2d6a4f] px-6 py-2.5 text-sm font-semibold text-white shadow-[0_4px_16px_rgba(45,106,79,0.25)] transition-all hover:bg-[#40916c] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? 'Menyimpan...' : 'Simpan Perubahan'}
-          </Button>
-          <Button
+          </button>
+          <button
             type="button"
-            variant="outline"
             onClick={() => router.navigate({ to: '/seller/produk' })}
             disabled={loading}
+            className="rounded-full border-[1.5px] border-[#e5e7eb] px-6 py-2.5 text-sm font-semibold text-[#4b5563] transition-all hover:border-[#2d6a4f] hover:text-[#2d6a4f] disabled:opacity-60"
           >
             Batal
-          </Button>
+          </button>
         </div>
       </form>
     </div>

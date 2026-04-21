@@ -1,4 +1,3 @@
-import { Badge } from '#/components/ui/badge'
 import type { Kategori } from '#/lib/supabase/types'
 
 export function KategoriFilter({
@@ -11,31 +10,28 @@ export function KategoriFilter({
   onSelect: (slug: string | null) => void
 }) {
   return (
-    <div className="flex gap-2 overflow-x-auto pb-2">
-      <button onClick={() => onSelect(null)}>
-        <Badge
-          variant={activeSlug === null ? 'default' : 'outline'}
-          className={
-            activeSlug === null
-              ? 'bg-[#1a6b3c] text-white hover:bg-[#1a6b3c]/90'
-              : 'cursor-pointer'
-          }
-        >
-          Semua
-        </Badge>
+    <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+      <button
+        onClick={() => onSelect(null)}
+        className={`shrink-0 rounded-full border-[1.5px] px-4 py-1.5 text-sm font-medium transition-all ${
+          activeSlug === null
+            ? 'border-[#2d6a4f] bg-[#2d6a4f] text-white shadow-sm'
+            : 'border-[#e5e7eb] bg-white text-[#4b5563] hover:border-[#74c69d] hover:text-[#2d6a4f]'
+        }`}
+      >
+        Semua
       </button>
       {kategori.map((kat) => (
-        <button key={kat.id} onClick={() => onSelect(kat.slug)}>
-          <Badge
-            variant={activeSlug === kat.slug ? 'default' : 'outline'}
-            className={
-              activeSlug === kat.slug
-                ? 'bg-[#1a6b3c] text-white hover:bg-[#1a6b3c]/90'
-                : 'cursor-pointer'
-            }
-          >
-            {kat.nama_kategori}
-          </Badge>
+        <button
+          key={kat.id}
+          onClick={() => onSelect(kat.slug)}
+          className={`shrink-0 rounded-full border-[1.5px] px-4 py-1.5 text-sm font-medium transition-all ${
+            activeSlug === kat.slug
+              ? 'border-[#2d6a4f] bg-[#2d6a4f] text-white shadow-sm'
+              : 'border-[#e5e7eb] bg-white text-[#4b5563] hover:border-[#74c69d] hover:text-[#2d6a4f]'
+          }`}
+        >
+          {kat.nama_kategori}
         </button>
       ))}
     </div>

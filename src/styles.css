@@ -5,13 +5,31 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-shs-green: #1a6b3c;
-  --color-shs-green-light: #e8f5e9;
-  --color-shs-green-medium: #2d8f5e;
-  --color-shs-gold: #f5a623;
-  --color-shs-gold-light: #fff8e1;
+  /* Green scale */
+  --color-shs-g950: #0a2218;
+  --color-shs-g900: #1a4d2e;
+  --color-shs-g700: #2d6a4f;
+  --color-shs-g500: #40916c;
+  --color-shs-g300: #74c69d;
+  --color-shs-g100: #d8f3dc;
+  --color-shs-g50: #eaf7ed;
+  /* Saffron scale */
+  --color-shs-s600: #b45309;
+  --color-shs-s500: #d97706;
+  --color-shs-s100: #fef3c7;
+  /* WhatsApp */
   --color-shs-wa: #25D366;
-  --font-sans: ui-sans-serif, system-ui, sans-serif;
+  --color-shs-wa-dark: #128C7E;
+  /* Neutral */
+  --color-shs-n900: #111827;
+  --color-shs-n600: #4b5563;
+  --color-shs-n400: #9ca3af;
+  --color-shs-n200: #e5e7eb;
+  --color-shs-n100: #f3f4f6;
+  /* Typography */
+  --font-jakarta: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-dm: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
 }
 
 :root {

@@ -1,7 +1,7 @@
 import { createServerFn } from '@tanstack/react-start'
 import { createServerSupabase } from '../lib/supabase/server'
 import type { ProdukWithDetails, SellerWithProduk, Kategori } from '../lib/supabase/types'
-import { getSupabaseServerClient } from './supabase'
+import { getSupabaseServerClient, getSupabaseServiceClient } from './supabase'
 import { generateSlug } from '#/lib/slug'
 
 const ITEMS_PER_PAGE = 12
@@ -138,8 +138,9 @@ export const getSellerBySlug = createServerFn({ method: 'GET' })
 export const trackWaClick = createServerFn({ method: 'POST' })
   .inputValidator((input: { produkId: string }) => input)
   .handler(async ({ data }) => {
-    const supabase = createServerSupabase()
-    await supabase.from('wa_clicks').insert({ produk_id: data.produkId })
+    const supabase = getSupabaseServiceClient()
+    const { error } = await supabase.from('wa_clicks').insert({ produk_id: data.produkId })
+    if (error) throw new Error(error.message)
     return { success: true }
   })
 

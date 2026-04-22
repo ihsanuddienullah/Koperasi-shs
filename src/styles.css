@@ -101,3 +101,8 @@ body,
     @apply font-sans;
   }
 }
+
+@keyframes shs-progress-shimmer {
+  0%   { background-position: 150% center; }
+  100% { background-position: -50% center; }
+}

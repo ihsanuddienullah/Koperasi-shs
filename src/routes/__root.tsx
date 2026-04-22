@@ -9,6 +9,7 @@ import type { ReactNode } from 'react'
 import { Toaster } from 'sonner'
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
+import { PageProgressBar } from '../components/PageProgressBar'
 
 import appCss from '../styles.css?url'
 
@@ -48,6 +49,7 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <RootDocument>
+      <PageProgressBar />
       <Navbar />
       <main className="min-h-[calc(100vh-3.5rem)]">
         <Outlet />

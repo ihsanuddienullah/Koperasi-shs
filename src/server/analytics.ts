@@ -1,5 +1,5 @@
 import { createServerFn } from '@tanstack/react-start'
-import { getSupabaseServerClient } from './supabase'
+import { getSupabaseServerClient, getSupabaseServiceClient } from './supabase'
 
 export type DashboardData = {
   totalProduk: number
@@ -40,6 +40,7 @@ export const getSellerDashboardData = createServerFn({ method: 'GET' }).handler(
       .is('deleted_at', null)
 
     const produkIds = (produkList ?? []).map((p) => (p as { id: string }).id)
+    const supabaseService = getSupabaseServiceClient()
 
     if (produkIds.length === 0) {
       return {
@@ -51,18 +52,18 @@ export const getSellerDashboardData = createServerFn({ method: 'GET' }).handler(
       }
     }
 
-    const { count: totalKlikBulanIni } = await supabase
+    const { count: totalKlikBulanIni } = await supabaseService
       .from('wa_clicks')
       .select('*', { count: 'exact', head: true })
       .in('produk_id', produkIds)
       .gte('clicked_at', bulanIniStart)
 
-    const { count: totalKlikSemuaWaktu } = await supabase
+    const { count: totalKlikSemuaWaktu } = await supabaseService
       .from('wa_clicks')
       .select('*', { count: 'exact', head: true })
       .in('produk_id', produkIds)
 
-    const { data: klikRows } = await supabase
+    const { data: klikRows } = await supabaseService
       .from('wa_clicks')
       .select('clicked_at')
       .in('produk_id', produkIds)
@@ -84,7 +85,7 @@ export const getSellerDashboardData = createServerFn({ method: 'GET' }).handler(
       klik,
     }))
 
-    const { data: klikPerProdukRows } = await supabase
+    const { data: klikPerProdukRows } = await supabaseService
       .from('wa_clicks')
       .select('produk_id')
       .in('produk_id', produkIds)

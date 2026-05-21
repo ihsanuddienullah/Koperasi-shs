@@ -3,20 +3,22 @@ import { ArrowRight } from 'lucide-react'
 import { HeroBanner } from '#/components/HeroBanner'
 import { ProductGrid } from '#/components/ProductGrid'
 import { KategoriFilter } from '#/components/KategoriFilter'
-import { getProdukList, getKategoriList } from '#/server/produk'
+import { getProdukList, getKategoriList, getBannerProdukList } from '#/server/produk'
 
 export const Route = createFileRoute('/')({
   loader: async () => {
     try {
-      const [produkResult, kategoriList] = await Promise.all([
+      const [produkResult, kategoriList, bannerResult] = await Promise.all([
         getProdukList({ data: { page: 1 } }),
         getKategoriList(),
+        getBannerProdukList(),
       ])
-      return { produkResult, kategoriList }
+      return { produkResult, kategoriList, bannerResult }
     } catch {
       return {
         produkResult: { data: [], total: 0, page: 1, totalPages: 0 },
         kategoriList: [],
+        bannerResult: [],
       }
     }
   },
@@ -24,11 +26,11 @@ export const Route = createFileRoute('/')({
 })
 
 function BerandaPage() {
-  const { produkResult, kategoriList } = Route.useLoaderData()
+  const { produkResult, kategoriList, bannerResult } = Route.useLoaderData()
 
   return (
     <div className="bg-[#f3f4f6]">
-      <HeroBanner />
+      <HeroBanner products={bannerResult} />
 
       <div className="mx-auto max-w-6xl px-4 py-10 md:px-6 md:py-14">
         {/* Section header */}

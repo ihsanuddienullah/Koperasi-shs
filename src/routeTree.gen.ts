@@ -14,7 +14,6 @@ import { Route as SellerRouteImport } from './routes/_seller'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProdukIndexRouteImport } from './routes/produk/index'
 import { Route as TokoSlugTokoRouteImport } from './routes/toko/$slugToko'
-import { Route as TokoSellerIdRouteImport } from './routes/toko/$sellerId'
 import { Route as SellerRegisterRouteImport } from './routes/seller/register'
 import { Route as SellerLoginRouteImport } from './routes/seller/login'
 import { Route as ProdukSlugRouteImport } from './routes/produk/$slug'
@@ -46,11 +45,6 @@ const ProdukIndexRoute = ProdukIndexRouteImport.update({
 const TokoSlugTokoRoute = TokoSlugTokoRouteImport.update({
   id: '/toko/$slugToko',
   path: '/toko/$slugToko',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TokoSellerIdRoute = TokoSellerIdRouteImport.update({
-  id: '/toko/$sellerId',
-  path: '/toko/$sellerId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SellerRegisterRoute = SellerRegisterRouteImport.update({
@@ -102,7 +96,6 @@ export interface FileRoutesByFullPath {
   '/produk/$slug': typeof ProdukSlugRoute
   '/seller/login': typeof SellerLoginRoute
   '/seller/register': typeof SellerRegisterRoute
-  '/toko/$sellerId': typeof TokoSellerIdRoute
   '/toko/$slugToko': typeof TokoSlugTokoRoute
   '/produk/': typeof ProdukIndexRoute
   '/seller/dashboard': typeof SellerSellerDashboardRoute
@@ -117,7 +110,6 @@ export interface FileRoutesByTo {
   '/produk/$slug': typeof ProdukSlugRoute
   '/seller/login': typeof SellerLoginRoute
   '/seller/register': typeof SellerRegisterRoute
-  '/toko/$sellerId': typeof TokoSellerIdRoute
   '/toko/$slugToko': typeof TokoSlugTokoRoute
   '/produk': typeof ProdukIndexRoute
   '/seller/dashboard': typeof SellerSellerDashboardRoute
@@ -134,7 +126,6 @@ export interface FileRoutesById {
   '/produk/$slug': typeof ProdukSlugRoute
   '/seller/login': typeof SellerLoginRoute
   '/seller/register': typeof SellerRegisterRoute
-  '/toko/$sellerId': typeof TokoSellerIdRoute
   '/toko/$slugToko': typeof TokoSlugTokoRoute
   '/produk/': typeof ProdukIndexRoute
   '/_seller/seller/dashboard': typeof SellerSellerDashboardRoute
@@ -151,7 +142,6 @@ export interface FileRouteTypes {
     | '/produk/$slug'
     | '/seller/login'
     | '/seller/register'
-    | '/toko/$sellerId'
     | '/toko/$slugToko'
     | '/produk/'
     | '/seller/dashboard'
@@ -166,7 +156,6 @@ export interface FileRouteTypes {
     | '/produk/$slug'
     | '/seller/login'
     | '/seller/register'
-    | '/toko/$sellerId'
     | '/toko/$slugToko'
     | '/produk'
     | '/seller/dashboard'
@@ -182,7 +171,6 @@ export interface FileRouteTypes {
     | '/produk/$slug'
     | '/seller/login'
     | '/seller/register'
-    | '/toko/$sellerId'
     | '/toko/$slugToko'
     | '/produk/'
     | '/_seller/seller/dashboard'
@@ -199,7 +187,6 @@ export interface RootRouteChildren {
   ProdukSlugRoute: typeof ProdukSlugRoute
   SellerLoginRoute: typeof SellerLoginRoute
   SellerRegisterRoute: typeof SellerRegisterRoute
-  TokoSellerIdRoute: typeof TokoSellerIdRoute
   TokoSlugTokoRoute: typeof TokoSlugTokoRoute
   ProdukIndexRoute: typeof ProdukIndexRoute
 }
@@ -239,13 +226,6 @@ declare module '@tanstack/react-router' {
       path: '/toko/$slugToko'
       fullPath: '/toko/$slugToko'
       preLoaderRoute: typeof TokoSlugTokoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/toko/$sellerId': {
-      id: '/toko/$sellerId'
-      path: '/toko/$sellerId'
-      fullPath: '/toko/$sellerId'
-      preLoaderRoute: typeof TokoSellerIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/seller/register': {
@@ -333,7 +313,6 @@ const rootRouteChildren: RootRouteChildren = {
   ProdukSlugRoute: ProdukSlugRoute,
   SellerLoginRoute: SellerLoginRoute,
   SellerRegisterRoute: SellerRegisterRoute,
-  TokoSellerIdRoute: TokoSellerIdRoute,
   TokoSlugTokoRoute: TokoSlugTokoRoute,
   ProdukIndexRoute: ProdukIndexRoute,
 }

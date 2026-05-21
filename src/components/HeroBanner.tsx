@@ -72,8 +72,7 @@ export type HeroBannerProps = {
 
 export function HeroBanner({ products = [] }: HeroBannerProps) {
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isPaused, setIsPaused] = useState(false)
-  const autoplayTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const savedCallback = useRef<() => void>(null)
 
   const items = (() => {
     const mapped = products.map((product, idx) => {
@@ -143,27 +142,25 @@ export function HeroBanner({ products = [] }: HeroBannerProps) {
   }, [items.length])
 
   useEffect(() => {
-    if (items.length <= 1) return
-    if (!isPaused) {
-      autoplayTimerRef.current = setInterval(() => {
-        nextSlide()
-      }, 3000)
-    }
+    savedCallback.current = nextSlide
+  })
 
-    return () => {
-      if (autoplayTimerRef.current) {
-        clearInterval(autoplayTimerRef.current)
+  useEffect(() => {
+    if (items.length <= 1) return
+    const tick = () => {
+      if (savedCallback.current) {
+        savedCallback.current()
       }
     }
-  }, [isPaused, items.length])
+    const timer = setInterval(tick, 4000)
+    return () => clearInterval(timer)
+  }, [items.length])
 
   const currentItem = items[currentIndex]
 
   return (
     <section 
       className="relative overflow-hidden transition-all duration-700 ease-in-out px-4 py-16 md:py-24"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
     >
       {/* Dynamic Background Gradients */}
       {items.map((promo, idx) => (

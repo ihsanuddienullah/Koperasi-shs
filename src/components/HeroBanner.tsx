@@ -30,7 +30,7 @@ const STYLE_PRESETS = [
 const STATIC_PROMOS = [
   {
     id: 'static-1',
-    badge: '✦ PRODUK TERLARIS',
+    badge: 'PRODUK TERLARIS',
     title: 'Madu Hutan Asli 500ml',
     subtitle: 'Madu hutan murni dari lebah liar, dipanen langsung dari hutan Kalimantan. Tanpa campuran, tanpa pengawet. Khasiat terjamin untuk kesehatan.',
     ctaText: 'Detail Produk',
@@ -40,7 +40,7 @@ const STATIC_PROMOS = [
   },
   {
     id: 'static-2',
-    badge: '✦ KERAJINAN TANGAN',
+    badge: 'KERAJINAN TANGAN',
     title: 'Tas Anyaman Rotan Premium',
     subtitle: 'Tas anyaman rotan handmade, desain modern minimalis. Cocok untuk gaya kasual maupun formal. Tali kulit sintetis premium.',
     ctaText: 'Lihat Detail',
@@ -50,7 +50,7 @@ const STATIC_PROMOS = [
   },
   {
     id: 'static-3',
-    badge: '✦ PERTANIAN ORGANIK',
+    badge: 'PERTANIAN ORGANIK',
     title: 'Beras Organik 5kg',
     subtitle: 'Beras organik putih varietas Mentik Wangi. Ditanam tanpa pestisida kimia. Tekstur pulen, aroma harum alami. Sertifikasi organik Indonesia.',
     ctaText: 'Detail Produk',
@@ -73,14 +73,14 @@ export function HeroBanner({ products = [] }: HeroBannerProps) {
     const mapped = products.map((product, idx) => {
       const style = STYLE_PRESETS[idx % STYLE_PRESETS.length]
       
-      let badge = '✦ PRODUK TERBARU'
+      let badge = 'PRODUK TERBARU'
       const isRec = (product as any)._is_recommended
       const clicks = (product as any)._clicks ?? 0
 
       if (product.is_promo) {
-        badge = `✦ ${product.kategori?.nama_kategori?.toUpperCase() || 'PROMO SPESIAL'}`
+        badge = 'PROMO'
       } else if (isRec && clicks > 0) {
-        badge = '✦ PRODUK TERLARIS'
+        badge = 'PRODUK TERLARIS'
       }
 
       const fallbackImages = [

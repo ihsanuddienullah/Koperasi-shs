@@ -194,6 +194,7 @@ function TambahProdukPage() {
               validateField('kategori_id', newForm)
             }}
             disabled={loading}
+            items={kategoriList.map(k => ({ value: k.id, label: k.nama_kategori }))}
           >
             <SelectTrigger className="rounded-xl border-[1.5px] border-[#e5e7eb] bg-white focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10">
               <SelectValue placeholder="Pilih kategori" />

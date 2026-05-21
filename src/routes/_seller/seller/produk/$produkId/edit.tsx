@@ -65,7 +65,7 @@ function EditProdukPage() {
     nama: currentForm.nama,
     harga: Number(currentForm.harga.replace(/\D/g, '')),
     deskripsi: currentForm.deskripsi || undefined,
-    kategori_id: currentForm.kategori_id || undefined,
+    kategori_id: currentForm.kategori_id,
     stok_tersedia: currentForm.stok_tersedia,
     is_promo: currentForm.is_promo,
   })
@@ -84,7 +84,7 @@ function EditProdukPage() {
       nama: form.nama,
       harga: Number(form.harga.replace(/\D/g, '')),
       deskripsi: form.deskripsi || undefined,
-      kategori_id: form.kategori_id || undefined,
+      kategori_id: form.kategori_id,
       stok_tersedia: form.stok_tersedia,
       is_promo: form.is_promo,
     })
@@ -197,7 +197,7 @@ function EditProdukPage() {
         {/* Kategori */}
         <div className="space-y-1.5">
           <label className="text-xs font-semibold uppercase tracking-wider text-[#4b5563]">
-            Kategori <span className="normal-case text-[#9ca3af]">(opsional)</span>
+            Kategori <span className="text-red-400">*</span>
           </label>
           <Select
             value={form.kategori_id}
@@ -221,6 +221,7 @@ function EditProdukPage() {
               ))}
             </SelectContent>
           </Select>
+          {errors.kategori_id && <p className="text-xs text-red-500">{errors.kategori_id}</p>}
         </div>
 
         {/* Stok toggle */}

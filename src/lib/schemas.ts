@@ -33,7 +33,7 @@ export const produkSchema = z.object({
   nama: z.string().min(3, 'Nama minimal 3 karakter').max(100).trim(),
   harga: z.number().positive('Harga harus positif').max(999_999_999),
   deskripsi: z.string().max(2000).optional(),
-  kategori_id: z.string().uuid().optional(),
+  kategori_id: z.string().min(1, 'Kategori wajib dipilih').uuid('Kategori wajib dipilih'),
   stok_tersedia: z.boolean(),
   is_promo: z.boolean().default(false),
 })

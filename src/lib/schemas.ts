@@ -35,6 +35,7 @@ export const produkSchema = z.object({
   deskripsi: z.string().max(2000).optional(),
   kategori_id: z.string().uuid().optional(),
   stok_tersedia: z.boolean(),
+  is_promo: z.boolean().default(false),
 })
 
 export const fotoSchema = z.object({

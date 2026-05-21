@@ -27,6 +27,7 @@ type FormState = {
   deskripsi: string
   kategori_id: string
   stok_tersedia: boolean
+  is_promo: boolean
 }
 
 function TambahProdukPage() {
@@ -42,6 +43,7 @@ function TambahProdukPage() {
     deskripsi: '',
     kategori_id: '',
     stok_tersedia: true,
+    is_promo: false,
   })
 
   const getValidationData = (currentForm: FormState) => ({
@@ -50,6 +52,7 @@ function TambahProdukPage() {
     deskripsi: currentForm.deskripsi || undefined,
     kategori_id: currentForm.kategori_id || undefined,
     stok_tersedia: currentForm.stok_tersedia,
+    is_promo: currentForm.is_promo,
   })
 
   const validateField = (field: string, currentForm: FormState) => {
@@ -60,7 +63,7 @@ function TambahProdukPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setTouched({ nama: true, harga: true, deskripsi: true, kategori_id: true, stok_tersedia: true })
+    setTouched({ nama: true, harga: true, deskripsi: true, kategori_id: true, stok_tersedia: true, is_promo: true })
 
     const result = produkSchema.safeParse({
       nama: form.nama,
@@ -68,6 +71,7 @@ function TambahProdukPage() {
       deskripsi: form.deskripsi || undefined,
       kategori_id: form.kategori_id || undefined,
       stok_tersedia: form.stok_tersedia,
+      is_promo: form.is_promo,
     })
 
     if (!result.success) {
@@ -231,6 +235,36 @@ function TambahProdukPage() {
               />
             </div>
             {form.stok_tersedia ? 'Stok tersedia' : 'Stok habis'}
+          </button>
+        </div>
+
+        {/* Promo toggle */}
+        <div className="space-y-1.5">
+          <label className="text-xs font-semibold uppercase tracking-wider text-[#4b5563]">
+            Promosikan Produk
+          </label>
+          <button
+            type="button"
+            onClick={() => setForm(f => ({ ...f, is_promo: !f.is_promo }))}
+            disabled={loading}
+            className={`flex items-center gap-3 rounded-xl border-[1.5px] px-4 py-2.5 text-sm font-medium transition-all disabled:opacity-60 ${
+              form.is_promo
+                ? 'border-[#d97706] bg-[#fffbeb] text-[#d97706]'
+                : 'border-[#e5e7eb] bg-white text-[#9ca3af]'
+            }`}
+          >
+            <div
+              className={`relative h-5 w-9 rounded-full transition-colors ${
+                form.is_promo ? 'bg-[#d97706]' : 'bg-[#d1d5db]'
+              }`}
+            >
+              <div
+                className={`absolute top-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform ${
+                  form.is_promo ? 'translate-x-4' : 'translate-x-0.5'
+                }`}
+              />
+            </div>
+            {form.is_promo ? 'Aktif Promo (Tampil di Slider Hero)' : 'Bukan Promo'}
           </button>
         </div>
 

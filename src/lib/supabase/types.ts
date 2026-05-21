@@ -27,6 +27,7 @@ export type Produk = {
   deskripsi: string | null
   kategori_id: string | null
   stok_tersedia: boolean
+  is_promo: boolean
   created_at: string
   updated_at: string
   deleted_at: string | null

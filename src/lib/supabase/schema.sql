@@ -33,6 +33,7 @@ CREATE TABLE produk (
   deskripsi TEXT,
   kategori_id UUID REFERENCES kategori(id) ON DELETE SET NULL,
   stok_tersedia BOOLEAN DEFAULT true,
+  is_promo BOOLEAN DEFAULT false,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   deleted_at TIMESTAMPTZ,

@@ -64,6 +64,95 @@ export const getProdukList = createServerFn({ method: 'GET' })
     }
   })
 
+export const getPromoProdukList = createServerFn({ method: 'GET' }).handler(
+  async () => {
+    const supabase = createServerSupabase()
+    const { data: rows, error } = await supabase
+      .from('produk')
+      .select(
+        '*, sellers(nama_toko, slug_toko, nomor_wa), kategori(nama_kategori, slug), foto_produk(*)'
+      )
+      .is('deleted_at', null)
+      .eq('is_promo', true)
+      .order('created_at', { ascending: false })
+
+    if (error) throw error
+    return mapProdukRows((rows ?? []) as Array<Record<string, unknown>>)
+  }
+)
+
+export const getBannerProdukList = createServerFn({ method: 'GET' }).handler(
+  async () => {
+    const supabase = createServerSupabase()
+
+    // 1. Ambil produk promo
+    const { data: promoRows, error: promoError } = await supabase
+      .from('produk')
+      .select(
+        '*, sellers(nama_toko, slug_toko, nomor_wa), kategori(nama_kategori, slug), foto_produk(*)'
+      )
+      .is('deleted_at', null)
+      .eq('is_promo', true)
+      .order('created_at', { ascending: false })
+
+    if (promoError) throw promoError
+    const promoProducts = mapProdukRows((promoRows ?? []) as Array<Record<string, unknown>>)
+
+    if (promoProducts.length >= 5) {
+      return promoProducts
+    }
+
+    // 2. Ambil klik WhatsApp untuk menentukan popularitas (paling laris)
+    const serviceClient = getSupabaseServiceClient()
+    const { data: clickRows } = await serviceClient
+      .from('wa_clicks')
+      .select('produk_id')
+
+    const clickCounts: Record<string, number> = {}
+    for (const row of clickRows ?? []) {
+      const pid = (row as { produk_id: string }).produk_id
+      clickCounts[pid] = (clickCounts[pid] ?? 0) + 1
+    }
+
+    // 3. Ambil semua produk non-promo yang aktif
+    const { data: otherRows, error: otherError } = await supabase
+      .from('produk')
+      .select(
+        '*, sellers(nama_toko, slug_toko, nomor_wa), kategori(nama_kategori, slug), foto_produk(*)'
+      )
+      .is('deleted_at', null)
+      .eq('is_promo', false)
+
+    if (otherError) throw otherError
+    const otherProducts = mapProdukRows((otherRows ?? []) as Array<Record<string, unknown>>)
+
+    // 4. Urutkan produk non-promo berdasarkan klik (terpopuler), lalu tanggal buat (terbaru)
+    const otherProductsWithClicks = otherProducts.map(p => ({
+      product: p,
+      clicks: clickCounts[p.id] ?? 0
+    }))
+
+    otherProductsWithClicks.sort((a, b) => {
+      if (b.clicks !== a.clicks) {
+        return b.clicks - a.clicks
+      }
+      return new Date(b.product.created_at).getTime() - new Date(a.product.created_at).getTime()
+    })
+
+    // 5. Gabungkan produk promo dengan produk non-promo teratas hingga mencapai minimal 5
+    const needed = 5 - promoProducts.length
+    const recommended = otherProductsWithClicks
+      .slice(0, needed)
+      .map(item => ({
+        ...item.product,
+        _is_recommended: true,
+        _clicks: item.clicks
+      }))
+
+    return [...promoProducts, ...recommended] as unknown as ProdukWithDetails[]
+  }
+)
+
 export const getProdukBySlug = createServerFn({ method: 'GET' })
   .inputValidator((input: { slug: string }) => input)
   .handler(async ({ data }) => {
@@ -204,6 +293,7 @@ export const createProduk = createServerFn({ method: 'POST' })
       deskripsi?: string
       kategori_id?: string
       stok_tersedia: boolean
+      is_promo?: boolean
       fotos: Array<{ url: string; urutan: number; is_utama: boolean }>
     }) => input
   )
@@ -239,6 +329,7 @@ export const createProduk = createServerFn({ method: 'POST' })
         deskripsi: data.deskripsi ?? null,
         kategori_id: data.kategori_id ?? null,
         stok_tersedia: data.stok_tersedia,
+        is_promo: data.is_promo ?? false,
       })
       .select('id')
       .single()
@@ -268,6 +359,7 @@ export const updateProduk = createServerFn({ method: 'POST' })
       deskripsi?: string
       kategori_id?: string
       stok_tersedia: boolean
+      is_promo?: boolean
       fotos: Array<{ url: string; urutan: number; is_utama: boolean }>
     }) => input
   )
@@ -294,6 +386,7 @@ export const updateProduk = createServerFn({ method: 'POST' })
         deskripsi: data.deskripsi ?? null,
         kategori_id: data.kategori_id ?? null,
         stok_tersedia: data.stok_tersedia,
+        is_promo: data.is_promo ?? false,
         updated_at: new Date().toISOString(),
       })
       .eq('id', data.id)

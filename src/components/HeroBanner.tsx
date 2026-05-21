@@ -147,7 +147,7 @@ export function HeroBanner({ products = [] }: HeroBannerProps) {
     if (!isPaused) {
       autoplayTimerRef.current = setInterval(() => {
         nextSlide()
-      }, 5000)
+      }, 3000)
     }
 
     return () => {

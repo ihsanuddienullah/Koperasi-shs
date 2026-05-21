@@ -35,6 +35,8 @@ const STATIC_PROMOS = [
     subtitle: 'Madu hutan murni dari lebah liar, dipanen langsung dari hutan Kalimantan. Tanpa campuran, tanpa pengawet. Khasiat terjamin untuk kesehatan.',
     ctaText: 'Detail Produk',
     ctaLink: '/produk/madu-hutan-asli-500ml',
+    secCtaText: 'Promo Lainnya',
+    secCtaLink: '/produk',
     imageUrl: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=600&q=80',
     price: 'Rp 85.000'
   },
@@ -45,6 +47,8 @@ const STATIC_PROMOS = [
     subtitle: 'Tas anyaman rotan handmade, desain modern minimalis. Cocok untuk gaya kasual maupun formal. Tali kulit sintetis premium.',
     ctaText: 'Lihat Detail',
     ctaLink: '/produk/tas-anyaman-rotan-premium',
+    secCtaText: 'Promo Lainnya',
+    secCtaLink: '/produk',
     imageUrl: 'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=600&q=80',
     price: 'Rp 175.000'
   },
@@ -55,6 +59,8 @@ const STATIC_PROMOS = [
     subtitle: 'Beras organik putih varietas Mentik Wangi. Ditanam tanpa pestisida kimia. Tekstur pulen, aroma harum alami. Sertifikasi organik Indonesia.',
     ctaText: 'Detail Produk',
     ctaLink: '/produk/beras-organik-5kg',
+    secCtaText: 'Promo Lainnya',
+    secCtaLink: '/produk',
     imageUrl: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=600&q=80',
     price: 'Rp 95.000'
   }
@@ -97,6 +103,8 @@ export function HeroBanner({ products = [] }: HeroBannerProps) {
         subtitle: product.deskripsi || 'Tidak ada deskripsi produk.',
         ctaText: 'Detail Produk',
         ctaLink: `/produk/${product.slug}`,
+        secCtaText: 'Promo Lainnya',
+        secCtaLink: product.sellers?.slug_toko ? `/toko/${product.sellers.slug_toko}` : '/produk',
         imageUrl,
         price: `Rp ${product.harga.toLocaleString('id-ID')}`,
         ...style
@@ -247,10 +255,10 @@ export function HeroBanner({ products = [] }: HeroBannerProps) {
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                     <Link
-                      to="/tentang"
+                      to={promo.secCtaLink}
                       className={`rounded-full border-[1.5px] bg-white px-7 py-3 text-sm font-semibold transition-all duration-300 ${promo.secButtonBorder}`}
                     >
-                      Tentang Kami
+                      {promo.secCtaText}
                     </Link>
                   </div>
                 </div>

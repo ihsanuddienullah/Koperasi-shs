@@ -210,7 +210,7 @@ function EditProdukPage() {
             disabled={loading}
             items={kategoriList.map(k => ({ value: k.id, label: k.nama_kategori }))}
           >
-            <SelectTrigger className="rounded-xl border-[1.5px] border-[#e5e7eb] bg-white focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10">
+            <SelectTrigger className="w-full h-auto py-2.5 px-4 rounded-xl border-[1.5px] border-[#e5e7eb] bg-white focus:border-[#2d6a4f] focus:ring-2 focus:ring-[#2d6a4f]/10">
               <SelectValue placeholder="Pilih kategori" />
             </SelectTrigger>
             <SelectContent>
